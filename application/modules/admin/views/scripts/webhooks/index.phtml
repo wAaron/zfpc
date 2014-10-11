@@ -1,0 +1,139 @@
+
+<?php echo $this->headScript()->appendFile('public/js/admin/DataTables/jquery.dataTables.min.js','text/javascript'); ?>
+<?php echo $this->headScript()->appendFile('public/js/admin/DataTables/DT_bootstrap.js','text/javascript'); ?>
+<?php echo $this->headLink()->appendStylesheet('public/css/admin/DataTables/DT_bootstrap.css');?>
+
+<div class="admin-side">
+    <div class="webhooks">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    <?php echo $this->translate( 'webhooks' ) ?>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <?php echo $this->formFilter ?>
+                    </div>
+                    <table class="table table-hover" id="webhooks">
+						<?php if ( count( $this->webhooks ) ) : ?>
+                        <thead>
+                        <tr>
+                            <th class="hidden-xs"><?php echo $this->translate( 'Platform' ) ?></th>
+                            <th><?php echo $this->translate( 'Plugin' ) ?></th>
+                            <th><?php echo $this->translate( 'Domain' ) ?></th>
+                            <th><?php echo $this->translate( 'Topic' ) ?></th>
+                            <th class="hidden-xs"><?php echo $this->translate( 'Callback Url' ) ?></th>
+                            <th><?php echo $this->translate( 'Registered' ) ?></th>
+                            <th class="hidden-xs"><?php echo $this->translate( 'Webhook id' ) ?></th>
+                            <th class="hidden-xs"><?php echo $this->translate( 'Creation time' ) ?></th>
+                            <th class="hidden-xs action-buttons-2"><?php echo $this->translate( 'Actions' ) ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ( $this->webhooks as $webhook ) : ?>
+                            <tr>
+                                <td class="tpl-platform hidden-xs"><?php echo $webhook['platform'] ? $webhook['platform'] : $this->translate( 'system' ); ?></td>
+                                <td class="tpl-plugin"><?php echo $webhook['plugin'] ?></td>
+                                <td class="tpl-domain"><?php echo $webhook['domain'] ?></td>
+                                <td class="tpl-topic"><?php echo $webhook['topic'] ?></td>
+                                <td class="tpl-callback_url hidden-xs"><?php echo $webhook['callback_url'] ?></td>
+                                <td class="tpl-registered"><?php echo $webhook['registered'] ? $this->translate('Yes') : $this->translate('No') ?></td>
+                                <td class="tpl-webhook_id hidden-xs"><?php echo $webhook['webhook_id'] ? $webhook['webhook_id'] : '' ?></td>
+                                <td class="tpl-create_time hidden-xs"><?php echo $webhook['create_time'] ?></td>
+                                <td class="actions hidden-xs">
+                                    <?php if ( $this->isSuperAdmin  ) : ?>
+                                        <?php echo $this->link(
+                                            '<i class="fa fa-edit"></i>',
+                                            $webhook['id'],
+                                            array (
+                                                'class' => 'edit btn-sm btn-teal tooltips',
+                                                'data-placement' => 'top',
+                                                'data-original-title' => $this->translate( 'edit' )
+                                            )
+                                        ) ?>
+                                    <?php endif ?>
+                                    <?php if ( $this->isSuperAdmin) : ?>
+                                        <?php echo $this->link(
+                                            '<i class="fa fa-times fa fa-white"></i>',
+                                            $webhook['id'],
+                                            array (
+                                                'class' => 'delete btn-sm btn-bricky tooltips',
+                                                'data-placement' => 'top',
+                                                'data-original-title' => $this->translate( 'delete' )
+                                            )
+                                        ) ?>
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+						<?php else : ?>
+							<div class="alert alert-info">
+								<i class="fa fa-info-circle"></i>
+								<?php echo $this->translate( 'no webhooks' ) ?>
+							</div>
+						<?php endif ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+		<?php echo $this->webhooks ?>
+    </div>
+</div>
+
+<script>
+
+    /**
+     * Edit Webhook url.
+     * @var string
+     */
+    Admin.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+    /**
+     * Delete Webhook url.
+     * @var string
+     */
+    Admin.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+    /**
+     * Platform with bound ids to it.
+     * @var json
+     */
+    Admin.platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+
+    /**
+     * Calls a dialog-box having set styles beforehand.
+     */
+	Admin.setFormExtendedEvents = function ()
+    {
+        $('#dialog-box label.col-sm-4').each( function ( index, element ) {
+            $( element ).removeClass( 'col-sm-4' );
+            $( element ).addClass( 'col-sm-3' );
+        } );
+
+        $('#dialog-box').attr( 'data-width', '800' );
+        $('#dialog-box').modal();
+        $('.modal-footer').show();
+    };
+
+    /**
+     * DOM ready event.
+     */
+    $( document ).ready( function ()
+    {
+		$('a.edit').click( Admin.standardEditAction );
+		$('a.delete').click( Admin.standardDeleteAction );
+
+		// Event for submit button.
+		$('#filter').click( function ( event ) {
+			$('#filter-form').submit();
+		} );
+		<?php if ( $this->filtered ) : ?>
+		Admin.filteredPaginationEvents();
+		<?php endif ?>
+    } );
+</script>

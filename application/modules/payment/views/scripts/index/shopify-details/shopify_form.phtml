@@ -1,0 +1,59 @@
+<?php if ( !$this->disableMainProduct ) : ?>
+	<?php $products = $this->currentPlan->getProducts() ?>
+	<form id="payment-form" class="clearfix" method="post"
+	 action="<?php echo $this->pcBaseURL ?>payment/shopify/do-charge"
+	>
+		<input type="hidden" name="shopify_form" value="main" />
+		<input type="hidden" name="shop" value="<?php echo $this->shop ?>" />
+		<input type="hidden" name="plugin" value="<?php echo $this->plugin ?>" />
+		<input type="hidden" name="plan" value="<?php echo $this->currentPlan->getName() ?>" />
+		<input type="hidden" name="charge_return_url"
+		 value="<?php echo $this->pcBaseURL ?>payment/shopify/finish-charge"
+		/>
+		<input type="hidden" id="product-id" name="product_id" value="<?php echo $products->getRow( 0 )->id ?>" />
+		<input type="hidden" id="charge-name" name="charge_name" value="<?php echo $this->translate( 'pay for shopify app' ) ?>" />
+		<input type="hidden" id="charge-price" name="charge_price" value="<?php echo $products->getRow( 0 )->price ?>" />
+		<input type="hidden" name="recurrent" value="1" />
+		<input type="submit" class="btn"
+		 value="<?php echo $this->translate( 'checkout with shopify' ) ?>"
+		/>
+	</form>
+<?php endif ?>
+
+<!-- Overdrafts. -->
+<?php if ( !empty ( $this->overdrafts ) ) : ?>
+	<form class="shopify-form clearfix" method="post"
+	 action="<?php echo $this->pcBaseURL ?>payment/shopify/do-charge"
+	>
+		<input type="hidden" name="shopify_form" value="overdraft" />
+		<input type="hidden" name="shop" value="<?php echo $this->shop ?>" />
+		<input type="hidden" name="plugin" value="<?php echo $this->plugin ?>" />
+		<input type="hidden" name="plan" value="<?php echo $this->currentPlan->getName() ?>" />
+		<input type="hidden" name="charge_return_url"
+		 value="<?php echo $this->pcBaseURL ?>payment/shopify/finish-charge"
+		/>
+		<input type="hidden" name="charge_name" value="<?php echo $this->translate( 'payment for overdraft limits' ) ?>" />
+		<input type="hidden" name="charge_price" value="<?php echo $this->overdraftTotalPrice ?>" />
+		<div id="overdrafts">
+			<p><?php
+
+				echo $this->translate(
+					'pay for overdraft limits',
+					$this->overdraftTotalPrice,
+					strtolower( $this->translate(
+						array ( 'month', 'months', count( $this->overdrafts ) )
+					) )
+				)
+
+			?></p>
+			<?php $ids = array () ?>
+			<?php foreach ( $this->overdrafts as $period ) : ?>
+				<?php $ids[] = $period['id'] ?>
+			<?php endforeach ?>
+			<input type="hidden" name="ids" value="<?php echo implode( ',', $ids ) ?>" />
+		</div>
+		<input type="submit" class="btn"
+		 value="<?php echo $this->translate( 'checkout with shopify' ) ?>"
+		/>
+	</form>
+<?php endif ?>

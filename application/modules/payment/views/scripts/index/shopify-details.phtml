@@ -1,0 +1,181 @@
+<table class="payment-details label" cellpadding="0" cellspacing="0" summary="payment details">
+	<tr>
+		<td class="payment-state">
+			<div class="wrapper">
+				<!-- In case a plan changed. -->
+				<?php if ( $this->planChanged ) : ?>
+					<fieldset>
+						<legend><?php echo $this->translate( 'message' ) ?></legend>
+						<p><?php echo $this->translate( 'plan has changed',
+							$this->oldRest, $this->settings->old_plan, $this->currentPlan->getName(), $this->direction, $this->newRest, $this->termsUrl
+						) ?></p>
+					</fieldset>
+				<?php endif ?>
+
+				<!-- Free plan section. -->
+				<?php if ( $this->currentPlan->isFree() ) : ?>
+					<!-- Overdrafts info. -->
+					<?php echo $this->partial( 'index/details/overdrafts_payment_info.phtml', array (
+						'transaction' => $this->transaction,
+						'lastPayDate' => $this->lastPayDate,
+						'lastPayAmount' => $this->lastPayAmount,
+						'lastPayOverdraftAmount' => $this->lastPayOverdraftAmount,
+						'overdraftUnpaidPeriod' => $this->overdraftUnpaidPeriod
+					) ) ?>
+
+					<!-- Plan's options. -->
+					<?php echo $this->partial( 'index/details/plans_options.phtml', array (
+						'currentMonthStatistics' => $this->currentMonthStatistics,
+						'previousMonthStatistics' => $this->previousMonthStatistics
+					) ) ?>
+
+					<!-- Overdraft payment. -->
+					<?php if ( $this->overdrafts ) : ?>
+						<div class="overdrafts">
+							<!-- The Shopify form. -->
+							<?php echo $this->partial( 'index/shopify-details/shopify_form.phtml', array (
+								'platform' => $this->platform,
+								'plugin' => $this->plugin->name,
+								'shop' => $this->shop->name,
+								'currentPlan' => $this->currentPlan,
+								'overdrafts' => $this->overdrafts,
+								'overdraftTotalPrice' => $this->overdraftTotalPrice,
+								'disableMainProduct' => true,
+								'pcBaseURL' => $this->pcBaseURL
+							) ) ?>
+						</div>
+
+						<!-- The Shopify image. -->
+						<?php echo $this->partial( 'index/shopify-details/shopify_image.phtml', array (
+							'host' => $this->host
+						) ) ?>
+						<div class="clear"></div>
+					<?php endif ?>
+
+				<!-- Non free plan section. -->
+				<?php else : ?>
+					<!-- Payment info. -->
+					<?php echo $this->partial( 'index/details/payment_info.phtml', array (
+						'charge' => $this->charge,
+						'lastPayDate' => $this->lastPayDate,
+						'lastPayAmount' => $this->lastPayAmount,
+						'lastPayOverdraftAmount' => $this->lastPayOverdraftAmount,
+						'paidTill' => $this->paidTill,
+						'formattedPaidTill' => $this->formattedPaidTill,
+						'trialPeriod' => $this->settings->trial_period
+					) ) ?>
+
+					<!-- Plan's options. -->
+					<?php echo $this->partial( 'index/details/plans_options.phtml', array (
+						'currentMonthStatistics' => $this->currentMonthStatistics,
+						'previousMonthStatistics' => $this->previousMonthStatistics
+					) ) ?>
+
+					<!-- In case recurrent payment is used. -->
+					<?php if ( $this->charge && $this->charge->isRecurring() ) : ?>
+						<!-- Overdraft payment. -->
+						<?php if ( $this->overdrafts ) : ?>
+							<div class="overdrafts">
+								<!-- The Shopify form. -->
+								<?php echo $this->partial( 'index/shopify-details/shopify_form.phtml', array (
+									'platform' => $this->platform,
+									'plugin' => $this->plugin->name,
+									'shop' => $this->shop->name,
+									'currentPlan' => $this->currentPlan,
+									'overdrafts' => $this->overdrafts,
+									'overdraftTotalPrice' => $this->overdraftTotalPrice,
+									'disableMainProduct' => true,
+									'pcBaseURL' => $this->pcBaseURL
+								) ) ?>
+							</div>
+
+							<!-- The Shopify image. -->
+							<?php echo $this->partial( 'index/shopify-details/shopify_image.phtml', array (
+								'host' => $this->host
+							) ) ?>
+							<div class="clear"></div>
+						<?php endif ?>
+
+						<!-- A charge recreation if trial period is changed. -->
+						<?php if ( $this->settings->trial_changed ) : ?>
+							<div class="recreate-charge">
+								<button onclick="location.href='<?php echo $this->pcBaseURL ?>payment/shopify/recreate-charge/charge_id/<?php echo $this->charge->id ?>';">
+									<?php echo $this->translate( 'recreate charge' ) ?>
+								</button>
+								<p><small><?php echo $this->translate( 'recreate charge description' ) ?></small></p>
+							</div>
+						<?php endif ?>
+
+					<!-- Manual prolonging section. -->
+					<?php else : ?>
+						<div class="prolong">
+							<p><?php
+
+								echo $this->translate( 'prolong using' );
+								if ( $this->trialPeriod ) :
+									echo $this->translate( 'prolond trial info' );
+								endif;
+
+							?></p>
+							<!-- The Shopify form. -->
+							<?php echo $this->partial( 'index/shopify-details/shopify_form.phtml', array (
+								'platform' => $this->platform,
+								'plugin' => $this->plugin->name,
+								'shop' => $this->shop->name,
+								'currentPlan' => $this->currentPlan,
+								'overdrafts' => $this->overdrafts,
+								'overdraftTotalPrice' => $this->overdraftTotalPrice,
+								'pcBaseURL' => $this->pcBaseURL
+							) ) ?>
+						</div>
+
+						<!-- The Shopify image. -->
+						<?php echo $this->partial( 'index/shopify-details/shopify_image.phtml', array (
+							'host' => $this->host
+						) ) ?>
+						<div class="clear"></div>
+					<?php endif ?>
+
+					<!-- Charge history. -->
+					<?php echo $this->partial( 'index/shopify-details/charge_history.phtml', array (
+						'history' => $this->history
+					) ) ?>
+				<?php endif ?>
+			</div>
+		</td>
+		<td class="payment-plans">
+			<div class="wrapper">
+				<!-- Payment plans. -->
+				<?php
+
+					foreach ( $this->plans as &$plan ) {
+						$rowset = new Zend_Db_Table_Rowset( array (
+							'data' => array (
+								$plan['products']->getRow( 0 )->toArray()
+							)
+						) );
+						$plan['products'] = $rowset;
+					}
+
+				?>
+				<?php echo $this->partial( 'index/details/payment_plans.phtml', array (
+					'plans' => $this->plans,
+					'currentPlan' => $this->currentPlan->getName(),
+					'currentPlanOptions' => $this->currentPlanOptions,
+					'currentPlanOptionsText' => $this->currentPlanOptionsText,
+					'trialPeriod' => $this->settings->trial_period,
+					'suspendApp' => $this->settings->suspend_app,
+					'pcBaseURL' => $this->pcBaseURL
+				) ) ?>
+			</div>
+		</td>
+	</tr>
+</table>
+<div class="clear"></div>
+<!-- Public content. -->
+<?php echo $this->partial( 'index/details/public.phtml', array (
+	'css' => $this->css,
+	'iecss' => $this->iecss,
+	'js' => $this->js
+) ) ?>
+<iframe id="pc-frame" data-instance-id="<?php echo $this->instanceId ?>"></iframe>

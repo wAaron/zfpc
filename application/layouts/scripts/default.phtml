@@ -1,0 +1,28 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8" ?>' ?>
+<?php echo $this->doctype( 'XHTML1_TRANSITIONAL' ) ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<base href="<?php echo $this->serverUrl( $this->baseUrl( '/' ) ) ?>" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<?php echo $this->headLink() ?>
+		<?php echo $this->headScript() ?>
+		<?php echo $this->headStyle() ?>
+		<!--[if gte IE 7]>
+			<link rel="stylesheet" type="text/css" href="public/css/common_gteie7.css" />
+			<link rel="stylesheet" type="text/css" href="public/css/<?php echo $this->layout()->module ?>_gteie7.css" />
+		<![endif]-->
+		<?php echo $this->headTitle() ?>
+	</head>
+	<body>
+		<!-- Content. -->
+		<?php echo $this->layout()->content ?>
+		<!-- Footer. -->
+		<?php
+
+			if ( $this->layout()->module != 'default' ) :
+				$this->partial( $this->layout()->platform .'_footer.phtml' );
+			endif;
+
+		?>
+	</body>
+</html>

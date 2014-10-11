@@ -1,0 +1,8 @@
+<div class="cancel-recurrent">
+	<p><?php echo $this->translate( 'you use recurrent payment' ) ?></p>
+	<form action="<?php echo $this->cancelRecurrentUrl ?>" method="post">
+		<input type="hidden" name="shopify_form" value="1" />
+		<input type="hidden" name="charge_id" value="<?php echo $this->charge->id ?>" />
+		<input type="submit" id="btn" class="btn" value="Cancel Recurrent Payment" />
+	</form>
+</div>

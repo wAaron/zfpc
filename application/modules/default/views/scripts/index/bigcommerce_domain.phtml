@@ -1,0 +1,35 @@
+<div class="bigcommerce">
+	<h1><?php echo $this->translate( 'Receipt of the API Domain' ) ?></h1>
+	<div class="page">
+		<div class="container">
+			<p><b>You can find the API Domain by the following way:</b></p>
+			<p><b><span style="color: #ff6600">1)</span>   Go to the admin panel of BigCommerce.</b></p>
+			<p><b><span style="color: #ff6600">2)</span>	Click on <i>Users</i>&nbsp; link.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/bigcommerce/bc_link_user.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">3)</span>	Choose the user for editing to whom you want to grant access via API. If you haven't created any user before, then you need to create him first of all.</b></p>
+			<br />
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/bigcommerce/bc_create_user.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">4)</span>	Copy your <em>API Domain</em> as indicated on the screenshot below. Meanwhile don't select "https://" and "/api/v2/".</b></p>
+			<br />
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/bigcommerce/bc_api_domain.png' ) ?>" /></p>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+/*<![CDATA[*/
+
+	<?php echo $this->css ?>
+
+/*]]>*/
+</style>
+<!--[if gte IE 7]>
+<style type="text/css">
+/*<![CDATA[*/
+
+	<?php echo $this->iecss ?>
+
+/*]]>*/
+</style>
+<![endif]-->

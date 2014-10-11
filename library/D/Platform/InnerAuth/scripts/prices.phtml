@@ -1,0 +1,31 @@
+<script type="text/javascript">
+/*<![CDATA[*/
+
+	$( document ).ready( function () {
+		var options = <?php echo $this->options ?>;
+		var prices = <?php echo $this->prices ?>;
+		$('#plan_id-element').append( '<span id="options"></span>' );
+		$('#plan_id-element').append( '<span id="prices"></span>' );
+		$('#plan_id').change( function () {
+			// Options.
+			var html = '';
+			if ( $( this ).val() in options ) {
+				for ( var iterator = 0; iterator < options[ $( this ).val() ].length; iterator++ ) {
+					html += options[ $( this ).val() ][ iterator ]['name'] +': '+ options[ $( this ).val() ][ iterator ]['value'] +' '+ options[ $( this ).val() ][ iterator ]['unit'] +'<br />';
+				}
+			}
+			$('#options').html( '<p>'+ html +'</p>' );
+			// Prices.
+			var html = '';
+			if ( $( this ).val() in prices ) {
+				for ( var iterator = 0; iterator < prices[ $( this ).val() ].length; iterator++ ) {
+					html += prices[ $( this ).val() ][ iterator ];
+				}
+			}
+			$('#prices').html( '<p>'+ html +'</p>' );
+		} );
+		$('#plan_id').change();
+	} );
+
+/*]]>*/
+</script>

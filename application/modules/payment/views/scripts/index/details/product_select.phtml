@@ -1,0 +1,22 @@
+<p><?php
+
+	echo $this->translate( 'prolong using' );
+	if ( $this->trialPeriod ) :
+		echo $this->translate( 'prolond trial info' );
+	endif;
+
+?></p>
+<select id="products">
+	<option value="">Choose period</option>
+	<?php foreach ( $this->plans as $_plan ) : ?>
+		<?php if ( $_plan['plan']['name'] == $this->currentPlan ) : ?>
+			<?php foreach ( $_plan['products'] as $_product ) : ?>
+				<option value="<?php echo $_product->id .'_'. $_product->quantity .'_'. $_product->price ?>">
+					<?php echo Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->price(
+						$_product->variety, $_product->quantity, $_plan['products']->getRow( 0 )->price, $_product->price
+					) ?>
+				</option>
+			<?php endforeach; break; ?>
+		<?php endif ?>
+	<?php endforeach ?>
+</select>

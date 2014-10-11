@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-external-link-square"></i>
+		<?php echo $this->translate( 'users' ) ?>
+	</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th><?php echo $this->translate( 'delete from subscribers' ) ?></th>
+					<th><?php echo $this->translate( 'delete from unsubscribers' ) ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ( $this->maxCount ) : ?>
+					<?php for ( $iteration = 0; $iteration < $this->maxCount; $iteration++ ) : ?>
+						<tr>
+							<td>
+								<?php if ( !empty ( $this->toDeleteFromSub ) ) : ?>
+									<?php echo array_shift( $this->toDeleteFromSub ) ?>
+								<?php endif ?>
+							</td>
+							<td>
+								<?php if ( !empty ( $this->toDeleteFromUnsub ) ) : ?>
+									<?php echo array_shift( $this->toDeleteFromUnsub ) ?>
+								<?php endif ?>
+							</td>
+						</tr>
+					<?php endfor ?>
+				<?php endif ?>
+			</tbody>
+		</table>
+	</div>
+</div>

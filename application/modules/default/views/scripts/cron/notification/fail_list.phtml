@@ -1,0 +1,10 @@
+<h1>Failed runs of cron tasks:</h1>
+<?php if ( count( $this->failList ) ) : ?>
+	<?php foreach ( $this->failList as $cronRuns ) : ?>
+		<h2><?php echo $cronRuns[0]->name ?></h2><ul>
+		<?php foreach ( $cronRuns as $run ) : ?>
+			<li>Run ID: <?php echo $run->id ?>, Started: <?php echo $run->started ?>.</li>
+		<?php endforeach ?>
+		</ul>
+	<?php endforeach ?>
+<?php endif ?>

@@ -1,0 +1,57 @@
+<?php if ( count( $this->paginator ) ) : ?>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'tasks statistics' ) ?>
+				</div>
+				<div class="panel-body">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th><?php echo $this->translate( 'id' ) ?></th>
+								<th><?php echo $this->translate( 'started' ) ?></th>
+								<th><?php echo $this->translate( 'finished' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'time execution' ) ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								foreach ( $this->paginator->getCurrentItems() as $stat ) :
+									$critical = $execTime = false;
+									$startedTime = strtotime( $stat->started );
+									if ( $stat->finished ) :
+										$execTime = strtotime( $stat->finished ) - $startedTime;
+									else :
+										$critical = (
+											time() > ( strtotime( $stat->started ) + $this->max_exec_time )
+										);
+									endif;
+								?>
+								<tr<?php if ( $critical ) : ?> class="critical"<?php endif ?>>
+									<td><?php echo $stat->id ?></td>
+									<td><?php echo $stat->started ?></td>
+									<td><?php echo $stat->finished ?></td>
+									<td class="center"><?php
+
+										if ( $execTime !== false ) {
+											echo $execTime . ' sec';
+										}
+
+									?></td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php echo $this->paginator ?>
+<?php else : ?>
+	<div class="alert alert-info">
+		<i class="fa fa-info-circle"></i>
+		<?php echo $this->translate( 'no statistics' ) ?>
+	</div>
+<?php endif ?>

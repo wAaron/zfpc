@@ -1,0 +1,102 @@
+<div class="admin-side">
+	<div class="tariff-plan-options">
+		<p><a href="#" class="btn btn-primary" id="create-new-option">
+			<i class="fa fa-plus"></i>
+			<?php echo $this->translate( 'create new option' ) ?>
+		</a></p>
+		<?php if ( count( $this->options ) ) : ?>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'options' ) ?>
+				</div>
+				<div class="panel-body">
+					<table class="table table-hover" id="tariff-plan-options">
+						<thead>
+							<tr>
+								<th><?php echo $this->translate( 'name' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'key' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'value' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'type' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'unit' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'unit after' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'display' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'use for payment' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'price for overdraft unit' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'overdraft unit count' ) ?></th>
+								<th><?php echo $this->translate( 'actions' ) ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $this->options as $option ) : ?>
+								<tr>
+									<td><?php echo $option->name ?></td>
+									<td class="center"><?php echo $option->key ?></td>
+									<td class="center"><?php echo $option->value ?></td>
+									<td class="center"><?php echo $option->type ?></td>
+									<td class="center"><?php echo $option->unit ?></td>
+									<td class="center"><?php echo $option->unit_after ? $this->translate( 'yes' ) : $this->translate( 'no' ) ?></td>
+									<td class="center"><?php echo $option->display ? $this->translate( 'yes' ) : $this->translate( 'no' ) ?></td>
+									<td class="center"><?php echo $option->use_for_payment ? $this->translate( 'yes' ) : $this->translate( 'no' ) ?></td>
+									<td class="center"><?php echo $option->price_for_overdraft_unit ?></td>
+									<td class="center"><?php echo $option->overdraft_unit_count ?></td>
+									<td class="actions">
+										<?php echo $this->link(
+											'<i class="fa fa-edit"></i>',
+											$option->id,
+											array (
+												'class' => 'edit btn-sm btn-teal tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit' )
+											)
+										) ?>
+										<?php if ( !$option->plan_id ) : ?>
+											<?php echo $this->link(
+												'<i class="fa fa-times fa fa-white"></i>',
+												$option->id,
+												array (
+													'class' => 'delete btn-sm btn-bricky tooltips',
+													'data-placement' => 'top',
+													'data-original-title' => $this->translate( 'delete' )
+												)
+											) ?>
+										<?php endif ?>
+									</td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		<?php else : ?>
+			<div class="alert alert-info">
+				<i class="fa fa-info-circle"></i>
+				<?php echo $this->translate( 'no options' ) ?>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+<script type="text/javascript">
+
+	Admin.createUrl = '<?php echo $this->url( array (
+		'action' => 'create'
+	) ) ?>';
+
+	Admin.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+	Admin.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function () {
+		$('#create-new-option').click( Admin.standardCreateAction );
+		$('a.edit').click( Admin.standardEditAction );
+		$('a.delete').click( Admin.standardDeleteAction );
+	} );
+
+</script>

@@ -1,0 +1,52 @@
+<div class="admin-side">
+	<div class="statistics">
+		<div id="dashboard">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'chart of webhooks which have been sent to apps by days' ) ?>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<?php echo $this->formFilter ?>
+					</div>
+					<div id="installs-chart"></div>
+					<div id="installs-chart2"></div>
+					<div id="installs-chart-control"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="<?php echo $this->config->google->jsapi ?>"></script>
+<script type="text/javascript" src="public/js/admin/google-chart-stats.js"></script>
+
+<script type="text/javascript">
+	Statistics.init( {
+		dataTable: <?php echo $this->chartData ?>,
+		startRangeDate: new Date( '<?php echo $this->startRangeDate ?>' ),
+		endRangeDate: new Date( '<?php echo $this->endRangeDate ?>' ),
+		platformPlugins: <?php echo json_encode( $this->platformPlugins ) ?>,
+		filterUrl: '<?php echo $this->url( array (
+   			'module' => 'admin',
+   			'controller' => 'statistics',
+   			'action' => 'webhooks-filter'
+  		), null, true ) ?>',
+		calcRowVals: function () {
+			var dataTable = Statistics.dataTable;
+			var state = Statistics.control.getState();
+			var rows = dataTable.getFilteredRows( [ {
+				column: 0,
+				minValue: state.range.start,
+				maxValue: state.range.end
+			} ] );
+			if ( rows.length ) {
+				var webhooks = 0;
+				for ( index in rows ) {
+					webhooks += parseInt( dataTable.getValue( rows[ index ], 1 ) );
+				}
+				dataTable.setColumnLabel( 1, 'Webhooks ' + webhooks );
+			}
+		}
+	} );
+</script>

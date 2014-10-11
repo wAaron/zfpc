@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8 no-js" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9 no-js" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+	<!--<![endif]-->
+	<head>
+		<base href="<?php echo $this->serverUrl( $this->baseUrl( '/' ) ) ?>">
+
+		<meta charset="utf-8">
+		<!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" media="screen" href="public/plugins/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="public/fonts/style.css">
+		<link rel="stylesheet" type="text/css" href="public/css/admin/main.css">
+		<link rel="stylesheet" type="text/css" href="public/css/admin/main-responsive.css">
+		<link rel="stylesheet" type="text/css" href="public/plugins/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="public/plugins/iCheck/skins/all.css">
+		<link rel="stylesheet" type="text/css" href="public/plugins/perfect-scrollbar/src/perfect-scrollbar.css">
+		<link rel="stylesheet" type="text/css" href="public/css/admin/theme_light.css" id="skin_color">
+		<link rel="stylesheet" type="text/css" href="public/css/admin.css">
+		<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="public/plugins/font-awesome/css/font-awesome-ie7.min.css">
+		<![endif]-->
+
+		<!--[if lt IE 9]>
+		<script src="public/plugins/respond.min.js"></script>
+		<script src="public/plugins/excanvas.min.js"></script>
+		<![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="public/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+		<script src="public/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="public/plugins/blockUI/jquery.blockUI.js"></script>
+		<script src="public/plugins/iCheck/jquery.icheck.min.js"></script>
+		<script src="public/plugins/perfect-scrollbar/src/jquery.mousewheel.js"></script>
+		<script src="public/plugins/perfect-scrollbar/src/perfect-scrollbar.js"></script>
+		<script src="public/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+		<script src="public/js/admin/login.js"></script>
+		<script src="public/js/admin/main.js"></script>
+		<script src="public/js/admin.js"></script>
+		<script>
+
+			$( document ).ready( function () {
+				Main.init();
+				Login.init();
+			} );
+
+		</script>
+
+		<?php echo $this->headTitle() ?>
+	</head>
+	<body class="login example1">
+		<div class="main-login col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+			<div class="logo">
+				<?php echo $this->translate( 'authentication' ) ?>
+			</div>
+			<?php echo $this->layout()->content ?>
+			<div class="copyright">
+				<?php echo $this->translate( 'copyright', date( 'Y' ) ) ?>
+			</div>
+		</div>
+	</body>
+</html>

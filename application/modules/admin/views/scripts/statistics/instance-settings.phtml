@@ -1,0 +1,10 @@
+<div class="instance-settings">
+	<?php if ( $this->message ) : ?>
+		<div class="alert alert-success">
+			<button data-dismiss="alert" class="close">×</button>
+			<i class="fa fa-check-circle"></i>
+			<?php echo $this->message ?>
+		</div>
+	<?php endif ?>
+	<?php echo $this->form ?>
+</div>

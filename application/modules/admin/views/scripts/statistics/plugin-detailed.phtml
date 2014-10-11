@@ -1,0 +1,184 @@
+<?php if ( count( $this->instances ) ) : ?>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-external-link-square"></i>
+			<?php echo $this->translate( 'instances' ) ?>
+			<div class="panel-tools">
+				<a class="btn btn-xs btn-link panel-refresh" id="plugin-detailed-reload" href="#">
+					<i class="fa fa-refresh"></i>
+				</a>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<?php echo $this->formFilter ?>
+			</div>
+			<table class="table table-hover" id="plugin-detailed-table">
+				<thead>
+					<tr>
+						<th><?php echo $this->translate( 'instance' ) ?></th>
+						<th><?php echo $this->translate( 'shop' ) ?></th>
+						<th><?php echo $this->translate( 'email' ) ?></th>
+						<th><?php echo $this->translate( 'date installed' ) ?></th>
+						<th><?php echo $this->translate( 'date deleted' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'active' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'trial' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'free' ) ?></th>
+						<th><?php echo $this->translate( 'last login' ) ?></th>
+						<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+							<th><?php echo $this->translate( 'last pyment date' ) ?></th>
+							<th><?php echo $this->translate( 'next pyment date' ) ?></th>
+							<th><?php echo $this->translate( 'last pyment amount' ) ?></th>
+							<th><?php echo $this->translate( 'total pyment amount' ) ?></th>
+						<?php endif ?>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $this->instances as $_instance ) : ?>
+						<tr>
+							<td>
+								<?php echo $this->link(
+									$_instance['id'],
+									$_instance['id'],
+									array (
+										'class' => 'instance-id'
+									)
+								) ?>
+							</td>
+							<td>
+								<?php if ( $_instance['state'] == 'installed' ) : ?>
+									<?php if ( $_instance['platform'] == 'shopify' ) : ?>
+										<?php echo $this->link(
+											$_instance['shop'],
+											$this->url( array (
+												'action' => 'login',
+												'controller' => 'auth',
+												'module' => $_instance['platform'],
+												'plugin' => base64_encode( $_instance['plugin'] ),
+												'shop_id' => $_instance['shop_id'],
+											), null, true ),
+											array (
+												'target' => '_blank'
+											)
+										) ?>
+									<?php else : ?>
+										<?php echo $this->link(
+											$_instance['shop'],
+											$this->url( array (
+												'action' => 'login',
+												'controller' => 'auth',
+												'module' => $_instance['platform'],
+												'plugin' => base64_encode( $_instance['plugin'] ),
+												'username' => $_instance['user'],
+											), null, true ),
+											array (
+												'target' => '_blank'
+											)
+										) ?>
+									<?php endif ?>
+								<?php else : ?>
+									<?php echo $_instance['shop'] ?>
+								<?php endif ?>
+							</td>
+							<td><?php echo $_instance['email'] ?></td>
+							<td><?php echo $_instance['installation_date'] ?></td>
+							<td><?php echo $_instance['deinstallation_date'] ?></td>
+							<td class="center"><?php echo $_instance['active'] ?></td>
+							<td class="center"><?php echo $_instance['trial'] ?></td>
+							<td class="center"><?php echo $_instance['free'] ?></td>
+							<td><?php echo $_instance['last_login'] ?></td>
+							<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+								<td><?php echo $_instance['lastPaymentDate'] ?></td>
+								<td><?php echo $_instance['nextPaymentDate'] ?></td>
+								<td class="center"><?php echo $_instance['lastPaymentAmount'] ?></td>
+								<td class="center"><?php echo $_instance['totalPaymentAmount'] ?></td>
+							<?php endif ?>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<?php echo $this->paginator ?>
+	<script type="text/javascript">
+
+		/**
+		 * Instance setting url.
+		 * @var string
+		 */
+		Statistics.settingsUrl = '<?php echo $this->url( array (
+			'module' => 'admin',
+			'controller' => 'statistics',
+			'action' => 'instance-settings',
+			'id' => ''
+		), null, true ) ?>';
+
+		/**
+		 * Uses dialog box for personal purposes.
+		 * @param string data - html.
+		 * @param integer left - left position.
+		 * @param integer top - top position.
+		 */
+		Statistics.initDialogBox = function ( data )
+		{
+			$('#modal-title').html(
+				'<?php echo $this->translate( 'instance settings' ) ?>'
+			);
+			$('#modal-content').html( data );
+			$('#modal-save').click( function () {
+				var formData = $('#modal-content form').serialize();
+				var url = $('#modal-content form').attr( 'action' );
+				//Admin.enableLoader( '#dialog-box-loader' );
+				$.post( url, formData, function ( data ) {
+					Statistics.initDialogBox( data );
+				} );
+			} );
+			$('#dialog-box').modal();
+		};
+
+		/**
+		 * DOM ready event.
+		 */
+		$( document ).ready( function ()
+		{
+			// Add event fo reload button.
+			$('#plugin-detailed-reload').click( function () {
+				Statistics.pluginDetailed( {
+					plugin_id: <?php echo $this->pluginId ?>,
+					page: <?php echo $this->page ?>
+				} );
+				return false;
+			} );
+			// Event for instance settings changing.
+			$('.instance-id').each( function ( index, element ) {
+				$( element ).click( function () {
+					$('.instance-id.selected').removeClass( 'selected' );
+					$( element ).addClass( 'selected' );
+					$.get(
+						Statistics.settingsUrl + $( this ).attr( 'href' ),
+						function ( data ) {
+							Statistics.initDialogBox( data );
+					} );
+					return false;
+				} );
+			} );
+			// Event for filter button.
+			$('#filter').click( function () {
+				var shop = $('#shop').val();
+				var email = $('#email').val();
+				Statistics.pluginDetailed( {
+					plugin_id: <?php echo $this->pluginId ?>,
+					shop: window.btoa( shop ),
+					email: window.btoa( email ),
+					page: <?php echo $this->page ?>
+				} );
+			} );
+		} );
+
+	</script>
+<?php else : ?>
+	<div class="alert alert-info">
+		<i class="fa fa-info-circle"></i>
+		<?php echo $this->translate( 'no instances' ) ?>
+	</div>
+<?php endif ?>

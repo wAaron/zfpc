@@ -1,0 +1,165 @@
+<div class="admin-side">
+	<div class="tariff-plans">
+		<p><a href="#" class="btn btn-primary" id="create-new-plan">
+			<i class="fa fa-plus"></i>
+			<?php echo $this->translate( 'create new plan' ) ?>
+		</a></p>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-external-link-square"></i>
+				<?php echo $this->translate( 'plans' ) ?>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<?php echo $this->formFilter ?>
+				</div>
+				<table class="table table-hover" id="tariff-plans">
+					<thead>
+						<tr>
+							<th><?php echo $this->translate( 'platform' ) ?></th>
+							<th><?php echo $this->translate( 'plugin' ) ?></th>
+							<th><?php echo $this->translate( 'name' ) ?></th>
+							<th><?php echo $this->translate( 'basic plan' ) ?></th>
+							<th class="center"><?php echo $this->translate( '1 month' ) ?></th>
+							<th class="center"><?php echo $this->translate( '3 months' ) ?></th>
+							<th class="center"><?php echo $this->translate( '6 months' ) ?></th>
+							<th class="center"><?php echo $this->translate( '12 months' ) ?></th>
+							<th><?php echo $this->translate( 'actions' ) ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if ( $this->paginator->getTotalItemCount() ) : ?>
+							<?php foreach ( $this->paginator->getCurrentItems() as $plan ) : ?>
+								<?php $products = $plan->getProducts(); ?>
+								<tr>
+									<td><?php echo $plan->platform_name ?></td>
+									<td><?php echo $plan->plugin_name ?></td>
+									<td><?php echo $plan->name ?></td>
+									<td><?php echo $plan->payment_plan ?></td>
+									<td class="center">
+										<?php if ( $products->offsetExists( 0 ) ) : ?>
+											<?php echo $products->getRow( 0 )->price ?>
+										<?php endif ?>
+									</td>
+									<td class="center">
+										<?php if ( $products->offsetExists( 1 ) ) : ?>
+											<?php echo $products->getRow( 1 )->price ?>
+										<?php endif ?>
+									</td>
+									<td class="center">
+										<?php if ( $products->offsetExists( 2 ) ) : ?>
+											<?php echo $products->getRow( 2 )->price ?>
+										<?php endif ?>
+									</td>
+									<td class="center">
+										<?php if ( $products->offsetExists( 3 ) ) : ?>
+											<?php echo $products->getRow( 3 )->price ?>
+										<?php endif ?>
+									</td>
+									<td class="actions">
+										<?php echo $this->link(
+											'<i class="fa fa-edit"></i>',
+											$plan->id,
+											array (
+												'class' => 'edit btn-sm btn-teal tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit' )
+											)
+										) ?>
+										<?php if ( !$plan->setting_id ) : ?>
+											<?php echo $this->link(
+												'<i class="fa fa-times fa fa-white"></i>',
+												$plan->id,
+												array (
+													'class' => 'delete btn-sm btn-bricky tooltips',
+													'data-placement' => 'top',
+													'data-original-title' => $this->translate( 'delete' )
+												)
+											) ?>
+										<?php endif ?>
+									</td>
+								</tr>
+							<?php endforeach ?>
+						<?php else : ?>
+							<tr><td colspan="9">
+								<div class="alert alert-info">
+									<i class="fa fa-info-circle"></i>
+									<?php echo $this->translate( 'no plans' ) ?>
+								</div>
+							</td></tr>
+						<?php endif ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php echo $this->paginator ?>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * Plan library.
+	 * @var object
+	 */
+	var Plans = new Object();
+
+	/**
+	 * Platform with bound ids to it.
+	 * @var json
+	 */
+	Plans.platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+
+	Admin.createUrl = '<?php echo $this->url( array (
+		'action' => 'create'
+	) ) ?>';
+
+	Admin.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+	Admin.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+	Admin.setFormExtendedEvents = function ()
+	{
+		$('#platform_id').change(
+			{ platformPlugins: Plans.platformPlugins, pluginId: '#plugin_id' },
+			Admin.platformSelectorEvent
+		);
+		$('#is_free').click( function () {
+			if ( $( this ).prop( 'checked' ) ) {
+				$('input[id*=product]').prop( 'readonly', true );
+			} else {
+				$('input[id*=product]').prop( 'readonly', false );
+			}
+		} );
+		if ( $('#is_free').prop( 'checked' ) ) {
+			$('input[id*=product]').prop( 'readonly', true );
+		}
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function () {
+		$('#create-new-plan').click( Admin.standardCreateAction );
+		$('a.edit').click( Admin.standardEditAction );
+		$('a.delete').click( Admin.standardDeleteAction );
+		$('#platform').change(
+			{ platformPlugins: Plans.platformPlugins },
+			Admin.platformSelectorEvent
+		);
+		if ( $('#plugin').val() ) {
+			$('#platform').change();
+		}
+		// Event for submit button.
+		$('#filter').click( function ( event ) {
+			$('#filter-form').submit();
+		} );
+		<?php if ( $this->filtered ) : ?>
+			Admin.filteredPaginationEvents();
+		<?php endif ?>
+	} );
+
+</script>

@@ -1,0 +1,121 @@
+<div class="admin-side">
+	<div class="statistics">
+		<div class="plugin-general-statistics" id="plugin-general-statistics"></div>
+		<div class="plugin-detailed-statistics" id="plugin-detailed-statistics"></div>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * Statistics library.
+	 * @var object
+	 */
+	var Statistics = new Object();
+
+	/**
+	 * General stat url.
+	 * @var string
+	 */
+	Statistics.generalUrl = '<?php echo $this->url( array (
+		'module' => 'admin',
+		'controller' => 'statistics',
+		'action' => 'plugin-general',
+		'platform' => ''
+	), null, true ) ?>';
+
+	/**
+	 * Detailed stat url.
+	 * @var string
+	 */
+	Statistics.detailedUrl = '<?php echo $this->url( array (
+		'module' => 'admin',
+		'controller' => 'statistics',
+		'action' => 'plugin-detailed'
+	), null, true ) ?>';
+
+	/**
+	 * Pagination callback.
+	 * @var function
+	 */
+	Statistics.callback;
+
+	/**
+	 * Loads general statistics through ajax and fills container.
+	 * @param string platform - platform name.
+	 */
+	Statistics.pluginGeneral = function ( platform )
+	{
+		Admin.enableLoader( '#plugin-general-statistics' );
+		$.get(
+			Statistics.generalUrl + platform,
+			function ( data ) {
+			// Fill container.
+			$('#plugin-general-statistics').html( data );
+			// Add event fo platform selector.
+			$('.platform-filter select').change( function () {
+				$('#plugin-detailed-statistics').html('');
+				Statistics.pluginGeneral( $( this ).val() );
+			} );
+			// Add event fo reload button.
+			$('#plugin-general-reload').click( function () {
+				$('#plugin-detailed-statistics').html('');
+				Statistics.pluginGeneral(
+					$('.platform-filter select').val()
+				);
+				return false;
+			} );
+			// Add event for application links.
+			$('#plugin-general-statistics table a').each( function ( index, element ) {
+				$( element ).click( function () {
+					$('#plugin-general-statistics table tr').each( function ( index, element ) {
+						$( element ).removeClass( 'selected' );
+					} );
+					$( this ).parent().parent().parent().addClass( 'selected' );
+					Statistics.pluginDetailed( {
+						plugin_id: $( element ).attr( 'href' ),
+						page: 1
+					} );
+					return false;
+				} );
+			} );
+		} );
+	};
+
+	/**
+	 * Loads detailed statistics through ajax and fills container.
+	 * @param object params - url params.
+	 */
+	Statistics.pluginDetailed = function ( params )
+	{
+		this.callback = function ( data ) {
+			$('#plugin-detailed-statistics').html( data );
+		};
+		Admin.enableLoader( '#plugin-detailed-statistics' );
+		Admin.paginationContainer = '#plugin-detailed-statistics';
+		Admin.paginationCallback = this.callback;
+		// Form an url.
+		var url = Statistics.detailedUrl;
+		if ( params.plugin_id ) {
+			url += '/plugin_id/' + params.plugin_id;
+		}
+		if ( params.shop ) {
+			url += '/shop/' + params.shop;
+		}
+		if ( params.email ) {
+			url += '/email/' + params.email;
+		}
+		if ( params.page ) {
+			url += '/page/' + params.page;
+		}
+		// Load.
+		$.get( url, this.callback );
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function () {
+		Statistics.pluginGeneral( '' );
+	} );
+
+</script>

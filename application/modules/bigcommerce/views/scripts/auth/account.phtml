@@ -1,0 +1,68 @@
+<div class="<?php echo $this->platform ?>">
+	<?php echo $this->action( 'menu', 'template', 'default', array (
+		'platform' => $this->platform,
+		'shop' => $this->shop->name,
+		'plugin' => $this->plugin->name,
+		'target' => false
+	) ) ?>
+	<div class="clear"></div>
+	<div class="account">
+		<h1><?php echo $this->translate( $this->platform . ' account' ) ?></h1>
+
+		<!-- Installed plugins -->
+		<?php if ( $this->credentials->toArray() ) : ?>
+			<div class="widget_header">
+				<h2><?php echo $this->translate( 'installed apps' ) ?></h2>
+			</div>
+			<ul>
+			<?php foreach ( $this->credentials as $_item ) : ?>
+				<li>
+					<h3><?php echo $_item->plugin_name ?></h3>
+					<a href="<?php echo $this->url( array (
+							'action' => 'configure',
+							'controller' => 'plugin',
+							'module' => $this->platform,
+							'api_id' => $_item->id,
+							'plugin' => base64_encode( $_item->plugin_name )
+						), null, true ) ?>"
+						data-plugin-id="<?php echo $_item->plugin_id ?>"
+						class="link-configure"
+						>
+						<?php echo $this->translate( 'configure' ) ?>
+					</a>
+					<div class="clear"></div>
+					<p><?php echo $_item->plugin_desc ?></p>
+				</li>
+			<?php endforeach ?>
+			</ul>
+			<script type="text/javascript">
+
+				$('.link-configure').each( function ( index, element ) {
+					if ( $( element ).data( 'plugin-id' ) != <?php echo $this->plugin->id ?> ) {
+						$( element ).click( function ( event ) {
+							alert( '<?php echo $this->translate( 'first you need to log in' ) ?>' );
+							event.preventDefault();
+						} );
+					}
+				} );
+
+			</script>
+		<?php endif ?>
+
+		<!-- Not installed plugins -->
+		<?php if ( $this->notInstalledPlugins->toArray() ) : ?>
+			<div class="widget_header">
+				<h2><?php echo $this->translate( 'not installed apps' ) ?></h2>
+			</div>
+			<ul>
+			<?php foreach ( $this->notInstalledPlugins as $_item ) : ?>
+				<li>
+					<h3><?php echo $_item->name ?></h3>
+					<div class="clear"></div>
+					<p><?php echo $_item->description ?></p>
+				</li>
+			<?php endforeach ?>
+			</ul>
+		<?php endif ?>
+	</div>
+</div>

@@ -1,0 +1,98 @@
+<?php if ( count( $this->previousMonthStatistics ) || count( $this->currentMonthStatistics ) ) : ?>
+	<div id="tabs">
+		<div class="widget_header wwOptions">
+			<ul class="w_Tabs w_Tabs_left">
+				<?php if ( count( $this->previousMonthStatistics ) ) : ?>
+					<li><a href="#tabs-1">
+						<?php echo $this->translate( 'statistics previous month' ) ?>
+					</a></li>
+				<?php endif ?>
+				<?php if ( count( $this->currentMonthStatistics ) ) : ?>
+					<li><a href="#tabs-2">
+						<?php echo $this->translate( 'statistics current month' ) ?>
+					</a></li>
+				<?php endif ?>
+			</ul>
+		</div>
+		<div class="widget_contents">
+			<!-- Previous month statistics. -->
+			<?php if ( count( $this->previousMonthStatistics ) ) : $this->totalOptionAmount = 0; ?>
+				<div id="tabs-1">
+					<?php foreach ( $this->previousMonthStatistics as $_optionStatistics ) : ?>
+						<p class="option-stat">
+							<strong><?php echo $_optionStatistics->option_name ?></strong><br />
+							<?php echo $this->translate( 'limit' ) ?> : <strong><?php echo $_optionStatistics->option_value .' '. $_optionStatistics->option_unit ?></strong><br />
+							<?php
+
+								if ( $_optionStatistics->option_overdraft_unit_count ) { // TODO remove later, crutch.
+									$this->os_value = $_optionStatistics->os_value / $_optionStatistics->option_overdraft_unit_count;
+									$this->os_value = is_float( $this->os_value ) ? round( $this->os_value, 2 ) : $this->os_value;
+									// Overdraft.
+									if ( $_optionStatistics->use_for_payment && ( $this->os_value > $_optionStatistics->option_value ) ) :
+										$this->overdraft_value = $this->os_value - $_optionStatistics->option_value;
+										$this->totalAmount = $this->overdraft_value * $_optionStatistics->option_price_for_overdraft_unit;
+										$this->totalOptionAmount += $this->totalAmount;
+										// Current value.
+										echo $this->translate( 'current value' ) .' : <strong><blink>'. $this->os_value .' '. $_optionStatistics->option_unit. '</blink></strong><br />';
+										// Overdraft.
+										echo $this->translate( 'overdraft' ) .' : <strong>$'. $this->totalAmount .' ( '. $this->overdraft_value .' '. $_optionStatistics->option_unit .' * $'. $_optionStatistics->option_price_for_overdraft_unit .' )</strong>';
+									// No overdraft.
+									else :
+										// Current value.
+										echo $this->translate( 'current value' ) .' : <strong>'. $this->os_value .' '. $_optionStatistics->option_unit. '</strong><br />';
+									endif;
+								}
+
+						?></p>
+					<?php endforeach ?>
+					<?php if ( $this->totalOptionAmount ) : ?>
+						<p class="total-option-amount">
+							<strong><span><?php echo $this->translate( 'total amount for overdraft' ) ?></span> : $<?php echo $this->totalOptionAmount ?></strong>
+						</p>
+						<p class="total-suggestion">
+							<span><?php echo $this->translate( 'suggestion for overdraft' ) ?></span>
+						</p>
+					<?php endif ?>
+				</div>
+			<?php endif ?>
+			<!-- Current month statistics. -->
+			<?php if ( count( $this->currentMonthStatistics ) ) : $this->totalOptionAmount = 0; ?>
+				<div id="tabs-2">
+					<?php foreach ( $this->currentMonthStatistics as $_optionStatistics ) : ?>
+						<p class="option-stat">
+							<strong><?php echo $_optionStatistics->name ?></strong><br />
+							<?php echo $this->translate( 'limit' ) ?> : <strong><?php echo $_optionStatistics->value .' '. $_optionStatistics->unit ?></strong><br />
+							<?php
+
+								$this->os_value = $_optionStatistics->os_value / $_optionStatistics->overdraft_unit_count;
+								$this->os_value = is_float( $this->os_value ) ? round( $this->os_value, 2 ) : $this->os_value;
+								// Overdraft.
+								if ( $_optionStatistics->use_for_payment && ( $this->os_value > $_optionStatistics->value ) ) :
+									$this->overdraft_value = $this->os_value - $_optionStatistics->value;
+									$this->totalAmount = $this->overdraft_value * $_optionStatistics->price_for_overdraft_unit;
+									$this->totalOptionAmount += $this->totalAmount;
+									// Current value.
+									echo $this->translate( 'current value' ) .' : <strong><blink>'. $this->os_value .' '. $_optionStatistics->unit. '</blink></strong><br />';
+									// Overdraft.
+									echo $this->translate( 'overdraft' ) .' : <strong>$'. $this->totalAmount .' ( '. $this->overdraft_value .' '. $_optionStatistics->unit .' * $'. $_optionStatistics->price_for_overdraft_unit .' )</strong>';
+								// No overdraft.
+								else :
+									// Current value.
+									echo $this->translate( 'current value' ) .' : <strong>'. $this->os_value .' '. $_optionStatistics->unit. '</strong><br />';
+								endif;
+
+						?></p>
+					<?php endforeach ?>
+					<?php if ( $this->totalOptionAmount ) : ?>
+						<p class="total-option-amount">
+							<strong><span><?php echo $this->translate( 'total amount for overdraft' ) ?></span> : $<?php echo $this->totalOptionAmount ?></strong>
+						</p>
+						<p class="total-suggestion">
+							<span><?php echo $this->translate( 'suggestion for overdraft' ) ?></span>
+						</p>
+					<?php endif ?>
+				</div>
+			<?php endif ?>
+		</div>
+	</div>
+<?php endif ?>

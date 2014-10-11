@@ -1,0 +1,58 @@
+<div class="admin-side">
+	<div class="settings">
+		<?php if ( $this->saved ) : ?>
+			<div class="alert alert-success">
+				<button data-dismiss="alert" class="close">×</button>
+				<i class="fa fa-check-circle"></i>
+				<?php echo $this->translate( 'saved' ) ?>
+			</div>
+		<?php endif ?>
+		<div class="row">
+			<div class="col-md-8">
+				<form method="post" action="<?php echo $this->url() ?>" class="clearfix">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-external-link-square"></i>
+							<?php echo $this->translate( 'notifications' ) ?>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<?php echo $this->formFilter ?>
+							</div>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<?php foreach ( $this->bunches['installation'] as $setting ) : ?>
+											<th class="center">
+												<?php echo $setting->platform_title ?>
+											</th>
+										<?php endforeach ?>
+										<th><?php echo $this->translate( 'description' ) ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ( $this->bunches as $key => $bunch ) : ?>
+										<tr>
+											<?php foreach ( $bunch as $setting ) : ?>
+												<td class="center">
+													<input type="hidden" name="<?php echo $key .'['. $setting->id .']' ?>" value="0">
+													<input type="checkbox" name="<?php echo $key .'['. $setting->id .']' ?>" value="1"
+													 <?php if ( $setting->bool_value ) : ?>checked="checked"<?php endif ?>
+													>
+												</td>
+											<?php endforeach ?>
+											<td><?php echo $this->translate( $this->labels[ $key ] ) ?></td>
+										</tr>
+									<?php endforeach ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<input class="btn btn-primary" type="submit"
+					 value="<?php echo $this->translate( 'save' ) ?>"
+					>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

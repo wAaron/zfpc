@@ -1,0 +1,33 @@
+<!-- If there is accepted transaction. -->
+<?php
+
+	$acceptedTransaction = (
+			$this->transaction
+		&& !$this->transaction->refunded
+		&& ( $this->transaction->fraud_status == 'pass' )
+		&& ( $this->transaction->invoice_status != 'declined' )
+	);
+	if ( $acceptedTransaction ) :
+
+	?>
+	<fieldset>
+		<legend class="tab_label"><b><?php echo $this->translate( 'payment info' ) ?></b></legend>
+		<?php if ( $this->overdraftUnpaidPeriod ) : ?>
+			<p><?php echo $this->translate( 'application was stopped' ) ?> : <?php echo date( "Y-m-01", strtotime( $this->overdraftUnpaidPeriod .'+ 2 month 1 day' ) ) ?></p>
+		<?php else : ?>
+			<p><?php echo $this->translate( 'you have full access' ) ?></p>
+		<?php endif ?>
+		<p><?php echo $this->translate( 'last pay date' ) ?> : <?php echo $this->lastPayDate ?></p>
+		<p><?php echo $this->translate( 'last pay amount' ) ?> : $<?php echo $this->lastPayOverdraftAmount ? $this->lastPayOverdraftAmount : $this->lastPayAmount ?></p>
+	</fieldset>
+<?php elseif ( $this->overdraftUnpaidPeriod ) : ?>
+	<fieldset>
+		<legend class="tab_label"><b><?php echo $this->translate( 'payment info' ) ?></b></legend>
+		<p><?php echo $this->translate( 'application was stopped' ) ?> : <?php echo date( "Y-m-01", strtotime( $this->overdraftUnpaidPeriod .'+ 2 month 1 day' ) ); ?></p>
+	</fieldset>
+<?php else : ?>
+	<fieldset>
+		<legend class="tab_label"><b><?php echo $this->translate( 'payment info' ) ?></b></legend>
+		<p><?php echo $this->translate( 'you have full access' ) ?></p>
+	</fieldset>
+<?php endif ?>

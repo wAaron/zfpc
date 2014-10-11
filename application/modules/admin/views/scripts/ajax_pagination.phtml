@@ -1,0 +1,85 @@
+<?php if ( $this->pageCount ) : ?>
+	<?php $onclick = 'Admin.loadPage( \''. $this->url( array ( 'page' => ':0' ), null, false, false ) .'\' ); return false;' ?>
+	<ul class="pagination pagination-sm">
+		<!-- First page link -->
+		<?php if ( isset ( $this->previous ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'first',
+					$this->url( array (
+						'page' => $this->first
+					) ),
+					array (
+						'onclick' => str_replace( ':0', $this->first, $onclick )
+					)
+				) ?>
+			</li>
+		<?php endif ?>
+
+		<!-- Previous page link -->
+		<?php if ( isset ( $this->previous ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'previous',
+					$this->url( array (
+						'page' => $this->previous
+					) ),
+					array (
+						'onclick' => str_replace( ':0', $this->previous, $onclick )
+					)
+				) ?>
+			</li>
+		<?php endif ?>
+
+		<!-- Range -->
+		<?php
+			foreach ( $this->pagesInRange as $page ) :
+				$active = ( $page == $this->current ) ? ' class="active"' : '';
+				echo '<li'. $active .'>'. $this->link(
+					$page,
+					$this->url( array (
+						'page' => $page
+					) ),
+					array (
+						'onclick' => str_replace( ':0', $page, $onclick )
+					)
+				) .'</li>';
+			endforeach;
+		?>
+
+		<!-- Next page link -->
+		<?php if ( isset ( $this->next ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'next',
+					$this->url( array (
+						'page' => $this->next
+					) ),
+					array (
+						'onclick' => str_replace( ':0', $this->next, $onclick )
+					)
+				) ?>
+			</li>
+		<?php endif ?>
+
+		<!-- Last page link -->
+		<?php if ( isset ( $this->next ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'last',
+					$this->url( array (
+						'page' => $this->last
+					) ),
+					array (
+						'onclick' => str_replace( ':0', $this->last, $onclick )
+					)
+				) ?>
+			</li>
+		<?php endif ?>
+	</ul>
+	<?php /*
+		<div class="range">
+			( from <?php echo $this->firstItemNumber ?> to <?php echo $this->lastItemNumber ?> all <?php echo $this->totalItemCount ?> )
+		</div>
+	*/?>
+<?php endif ?>

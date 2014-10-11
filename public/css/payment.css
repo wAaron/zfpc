@@ -1,0 +1,92 @@
+/* ----- Common ----- */
+#content { 
+	padding: 0px !important; overflow: hidden !important;
+	font-size: 14px !important; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important; color: #444444 !important; 
+}
+.payment-details { width: 100%; margin: 0px; }
+#pc-frame { width: 0px; height: 0px; visibility: hidden; }
+.w_Tabs_left, .w_Tabs_left li { float: left; }
+.w_Tabs_left li:first-child a { border-left: none; }
+.w_Tabs_left li:last-child a { border-right: 1px solid #dadada; }
+
+/* ----- State ----- */
+.payment-state { width: 580px; padding: 0px; vertical-align: top; }
+.payment-state .wrapper { padding: 0px 10px 0px 10px; width: auto; }
+.grid_wrapper .payment-state .wrapper { padding-left: 0px; }
+.payment-state fieldset { padding: 0px 10px 5px 10px; border: 1px solid #e1e1e1; font-size: 13px; margin-bottom: 10px; }
+.payment-state fieldset p { line-height: 22px; }
+.payment-state legend { padding: 0px 6px; font-size: 12px; line-height: 20px; letter-spacing: 1px; color: #bbbbbb; }
+.payment-state p { margin: 0px; line-height: 26px; }
+
+/* Option statistics */
+.payment-state #tabs { margin-bottom: 10px; }
+.payment-state .ui-tabs-panel { padding: 10px 10px 2px 10px !important; font-size: 13px !important; }
+.payment-state .ui-tabs-panel p { line-height: 17px; padding-bottom: 5px; }
+.payment-state .ui-tabs-panel .option-stat > strong:first-child { color: #89b749; }
+.payment-state .ui-tabs-panel .option-stat blink { color: #f73333; }
+.payment-state .ui-tabs-panel .total-suggestion span > strong { font-style: italic; }
+.payment-state .widget_header { padding: 0px; }
+
+/* Form section */
+.payment-state .prolong { width: 440px; float: left; padding-bottom: 10px; }
+.payment-state .prolong p { padding-bottom: 5px; line-height: 16px; }
+.payment-state .prolong p span { display: block; font-size: 12px; }
+.payment-state .prolong select { margin: 0px 15px 10px 0px; padding: 0px; list-style: none; }
+.payment-state .prolong form { width: auto; margin: 0px; padding: 0px; clear: none;	line-height: 16px; }
+.payment-state .prolong form input[type="checkbox"] { float: none; clear: none; margin: 0px 4px 0px 0px; vertical-align: -2px; }
+.payment-state .prolong form label { display: inline; margin: 0px; padding: 0px; font-size: 12px; line-height: 18px; color: #555555; }
+.payment-state .prolong form div { padding: 0px 0px 10px 0px; }
+.payment-state .prolong form small { font-size: 12px; }
+.payment-state .cancel-recurrent { padding-bottom: 10px; }
+.payment-state .overdrafts { width: 440px; float: left; }
+.payment-state .overdrafts #overdrafts { padding: 30px 0px 0px 0px; }
+.shopify-form #overdrafts { padding-top: 0px !important; }
+.shopify-form #overdrafts p { padding-bottom: 0px; }
+#payment-form + .shopify-form #overdrafts p { padding-top: 10px; }
+.payment-state .twoco { display: block; clear: left; float: left; padding-top: 5px; }
+.payment-state .recreate-charge { padding-bottom: 7px; }
+.payment-state .recreate-charge small { font-size: 12px; }
+
+/* History */
+#payment-history-link { 
+	text-decoration: none; color: #89B749;
+	-moz-text-shadow: 1px 1px 0px #eeeeee;
+	-webkit-text-shadow: 1px 1px 0px #eeeeee;
+	text-shadow: 1px 1px 0px #eeeeee; 
+}
+#payment-history { display: none; padding-top: 10px; font-size: 12px; }
+#payment-history th, #payment-history td { padding: 2px 10px; text-align: center; }
+#payment-history tr:nth-child(odd) { background-color: #f5f5f5; }
+#payment-history .payment-history-name { text-align: left; }
+
+/* ----- Plans ----- */
+.payment-plans { 
+	padding: 0px 0px 0px 0px; vertical-align: top;
+	background-color: #fafafa; border-left: 1px dashed #e4e4e4;
+	-moz-text-shadow: 1px 1px 0px #ffffff;
+	-webkit-text-shadow: 1px 1px 0px #ffffff;
+	text-shadow: 1px 1px 0px #ffffff;
+}
+.payment-plans .wrapper { padding: 15px; width: auto; }
+.payment-plans hr { height: 1px; margin: 0px; border: none; background-color: #e4e4e4; }
+.payment-plans hr.high { margin: 10px 0px; }
+.payment-plans .your-plan { padding-bottom: 10px; line-height: 17px; }
+.payment-plans h2 { 
+	margin: 0px; padding: 10px 0px; 
+	text-align: left; font-size: 15px; line-height: 18px;
+	border: none; background-color: transparent;
+}
+.payment-plans ul { float: left; clear: left; margin: 0px; padding: 0px 15px 10px 0px; }
+.payment-plans li { margin: 0px; padding-left: 2px; list-style: none;  line-height: 18px; }
+.payment-plans li:first-child { 
+	padding-bottom: 4px; padding-left: 0px; 
+	font-weight: bold; font-size: 18px;
+	background: none; color: #ff6600;
+}
+.payment-plans strong { color: #555555; }
+.payment-plans .with-options, .payment-plans .your-plan.with-options strong { text-decoration: underline; cursor: help; }
+.payment-plans .your-plan.with-options { text-decoration: none; cursor: text; }
+.payment-plans .your-plan.with-options span { display: block; font-size: 12px; color: #aaaaaa; }
+.payment-plans .suspend-app { padding-top: 15px; margin-right: -10px; }
+.payment-plans .suspend-app input[type="checkbox"] { vertical-align: -2px; }
+.payment-plans .suspend-app label { font-weight: bold; font-size: 12px; color: #555555; }

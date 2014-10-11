@@ -1,0 +1,14 @@
+@import "https://fonts.googleapis.com/css?family=Oswald|Droid+Sans:400,700";
+
+.clearfix:after { clear: both; content: "."; display: block; height: 0px; line-height: 0px; visibility: hidden; }
+.clear { clear: both; }
+
+h1, h2, h3, h4, h5, h6, p, ul, li, dl, dt, dd { margin: 0px; padding: 0px; }
+
+/* Forms */
+form dt { margin: 6px 0px 0px 0px; }
+form dd { margin: 0px 0px 0px 0px; }
+form .errors { padding-left: 0px; list-style: none; color: #ff120a; }
+form dt.buttons { margin-top: 10px; }
+form dt.buttons input, form dt.buttons button { margin-right: 8px; }
+form dd.hidden { display: none; }

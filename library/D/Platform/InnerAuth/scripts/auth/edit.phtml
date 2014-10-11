@@ -1,0 +1,15 @@
+<div class="<?php echo $this->platform ?>">
+	<?php echo $this->action( 'menu', 'template', 'default', array (
+		'platform' => $this->platform,
+		'shop' => $this->shop->name,
+		'plugin' => $this->plugin,
+		'target' => false
+	) ) ?>
+	<div class="clear"></div>
+	<div class="configure">
+		<div class="widget_header">
+			<h2><?php echo $this->translate( 'application account editing' ) ?></h2>
+		</div>
+		<?php echo $this->form ?>
+	</div>
+</div>

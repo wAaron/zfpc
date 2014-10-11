@@ -1,0 +1,49 @@
+#plugin-detailed-table td, #plugin-detailed-table th, .cron td, .cron th,
+.emails td, .emails th, .admins td, .admins th,
+.transactions td, .transactions th 
+.levels td, .levels th,
+.webhooks td, .webhooks th
+{ white-space: nowrap; }
+
+.plugin-detailed-statistics .panel-body, .cron .panel-body,
+.levels .panel-body, .transactions .panel-body ,.emails .panel-body, .admins .panel-body,
+.webhooks .panel-body
+{ overflow-x: scroll; }
+
+.popovers { cursor: pointer; color: #0782c1; }
+.popovers:hover { text-decoration: underline; }
+.popover { max-width: 350px !important; }
+.popover-content th { border-top: none !important; }
+.popover-content th, .popover-content td { padding: 6px 8px !important; white-space: nowrap; }
+.popover-content .nowrap { white-space: nowrap !important; }
+
+.navbar-brand { padding-left: 0px !important; }
+.table-filter { padding: 8px; }
+.plugin-general-statistics .table-filter select { width: 190px; }
+.pagination { margin: 0px; margin-bottom: 10px; }
+.invoice-details { display: none; }
+#dashboard label.col-sm-1 { width: 9%; }
+#installs-chart-control { height: 100px; }
+#installs-chart { height: 400px; margin-bottom: 0px; }
+#platform-installs-chart, #plugin-installs-chart, #platform-earned-chart, #plugin-earned-chart { height: 222px; }
+.settings label { padding-top: 8px; }
+#dialog-box .form-horizontal .form-group { margin-left: 0px; margin-right: 0px; }
+.form-group textarea { height: 100px; }
+.form-checkbox { margin: 8px 0px 0px 0px !important; }
+
+.critical { color: #b94a48; background-color: #f2dede; }
+.has-error { clear: left; }
+.description { float: left; }
+
+.webhooks .actions, .webhooks-out .actions  {
+    white-space: nowrap;
+}
+#level-edit-permissions-form label{
+    padding-left: 10px;
+}
+#level-edit-permissions-form .daredevel-tree {
+    border: 0px;
+}
+#level-edit-permissions-form .daredevel-tree li{
+    list-style-type: none;
+}

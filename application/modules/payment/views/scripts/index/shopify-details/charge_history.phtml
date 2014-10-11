@@ -1,0 +1,25 @@
+<?php if ( $this->history ) : ?>
+	<a href="#" id="payment-history-link"><?php echo $this->translate( 'payment history' ) ?></a>
+	<div id="payment-history">
+		<table cellpadding="0" cellspacing="0" summary="payment history">
+			<tr>
+				<th><?php echo $this->translate( 'charge id' ) ?></th>
+				<th><?php echo $this->translate( 'amount' ) ?></th>
+				<th><?php echo $this->translate( 'payment info' ) ?></th>
+				<th><?php echo $this->translate( 'payment date' ) ?></th>
+				<th><?php echo $this->translate( 'payment status' ) ?></th>
+			</tr>
+			<?php foreach ( $this->history as $bill ) : ?>
+				<tr>
+					<td><?php echo $bill->charge_id ?></td>
+					<td><?php echo $bill->amount ?></td>
+					<td class="payment-history-name">
+						<?php echo $this->translate( 'charge bill' ) ?>
+					</td>
+					<td><?php echo $bill->date ?></td>
+					<td></td>
+				</tr>
+			<?php endforeach ?>
+		</table>
+	</div>
+<?php endif ?>

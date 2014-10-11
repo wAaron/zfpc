@@ -1,0 +1,56 @@
+<div class="admin-side">
+	<div class="settings">
+		<?php if ( $this->saved ) : ?>
+			<div class="alert alert-success">
+				<button data-dismiss="alert" class="close">×</button>
+				<i class="fa fa-check-circle"></i>
+				<?php echo $this->translate( 'saved' ) ?>
+			</div>
+		<?php endif ?>
+		<div class="row">
+			<div class="col-md-12">
+				<form method="post" action="<?php echo $this->url() ?>" class="clearfix form-horizontal">
+					<?php $prevSection = null; ?>
+					<?php foreach ( $this->configs as $config ) : ?>
+						<?php if ( $config->section != $prevSection ) : ?>
+							<?php if ( $prevSection ) : ?>
+								</div>
+							</div>
+							<?php endif ?>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<i class="fa fa-external-link-square"></i>
+									<?php echo $this->translate( $config->section . ' section' ) ?>
+								</div>
+								<div class="panel-body">
+						<?php endif ?>
+						<div class="form-group">
+							<div class="col-sm-3">
+								<label for="config-<?php echo $config->id ?>">
+									<?php echo $config->description ?>
+								</label>
+							</div>
+							<div class="col-sm-9">
+								<input type="text" class="form-control"
+								 id="config-<?php echo $config->id ?>"
+								 name="config[<?php echo $config->id ?>]"
+								 value="<?php echo htmlspecialchars( $config->value ) ?>"
+								>
+							</div>
+						</div>
+						<?php $prevSection = $config->section; ?>
+					<?php endforeach ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2">
+							<button type="submit" class="btn btn-primary form-control">
+								<?php echo $this->translate( 'save' ) ?>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

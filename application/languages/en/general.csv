@@ -1,0 +1,481 @@
+## Simple words
+
+Admin;Admin
+accepted;Accepted
+action;Action;Actions;
+actions;Actions
+active;Active
+admins;Admins
+amount;Amount
+app;App
+apps;Apps
+authentication;Authentication
+cancel;Cancel
+cancelled;Cancelled
+charges;Charges
+close;Close
+configure;Configure
+content;Content
+conversion;Conversion
+create;Create
+cron;Cron
+crypt;Crypt
+customer;Customer
+dashboard;Dashboard
+day;Day;Days;
+days;
+default;Default
+delete;Delete
+deleted;Deleted
+description;Description
+details;Details
+difference;Difference
+display;Display
+domain;Domain
+download;Download
+email;Email
+emails;Emails
+edit;Edit
+file;File
+files;Files
+finance;Finance
+finished;Finished
+first;First
+free;Free
+from;From
+generate;Generate
+generated;Generated
+home;Home
+Guest;Guest
+install;Install
+installations;Installations
+installed;Installed
+instance;Instance
+instances;Instances
+import;Import
+imported;Imported
+interval;Interval
+invoice;Invoice
+invoices;Invoices
+key;Key
+last;Last
+login;Login
+limit;Limit
+login;Log In
+mailchimp;Mailchimp
+members;Members
+message;Message
+month;Month;Months;
+months;
+name;Name
+next;Next
+nickname;Nickname
+no;No
+notification;Notification
+notifications;Notifications
+options;Options
+or;or
+overdraft;Overdraft
+password;Password
+payments;Payments
+placeholders;Placeholders
+platform;Platform
+plugin;Application
+plugins;Applications
+previous;Previous
+priority;Priority
+recurrent;Recurrent
+register;Register
+registered;Registered
+remove;Remove
+save;Save
+saved;Saved
+search;Search
+server;Server
+settings;Settings
+shop;Shop
+started;Started
+state;State
+statistics;Statistics
+status;Status
+subject;Subject
+Super Admin;Super Admin
+synchronize;Synchronize
+system;System
+tasks;Tasks
+tariff;Tariff
+templates;Templates
+to;To
+topic;Topic
+total;Total
+transactions;Transactions
+trial;Trial
+type;Type
+uninstall;Uninstall
+uninstallations;Uninstallations
+unit;Unit
+username;Username
+user;User
+users;Users
+value;Value
+webhooks;Webhooks
+yes;Yes
+
+## Common sentences
+
+are you sure;Are you sure?
+copyright;"Copyright &copy; 2011-%s SpurIT, All rights reserved."
+impossibly to create file;It is impossibly to create file
+impossibly to open file;It is impossibly to open file
+per day;Per day
+shop administration;Store Administration
+shop front-end;Store Front-end
+terms of use;Terms of Use
+invalid payload;Invalid payload
+plugin uninstall action is unavailable;The plugin uninstall action is unavailable
+first you need to log in;First, you need to log in to this app, in order to change parameters of another app. You can click on the title of the app in the current list to do it.
+
+## Form sentences
+
+accept terms of use please;Accept terms of use please
+application account editing;Application Account Editing
+back to log in;Back to log in
+confirm password;Confirm password
+confirm new password;Confirm new password
+forgot password;Forgot password</a>
+forgot password link;<a href="%s">forgot password ?</a>
+get new password;Get new password
+new password;New password
+passwords does not match;Passwords does not match
+shop url;Store URL <span>( with or without http:// )</span>
+shop domain;Store Domain
+shop exists;Such store already exists
+email exists;Such email already exists
+send me update news;Send me news about application updates (critical alerts will be sent in any case)
+send me product news;Send me news about new products and promotions
+tariff plan;Select Tariff Plan
+user exists;Such user already exists
+user does not exists;Such user does not exists
+user or email does not exists;The user with such email or username is not found
+new password has been sent;New password has been sent to your email address
+wrong password;Wrong password
+username or email;Email or username 
+username register;Username <span>( any value, not used as Username API )</span>
+auth index page description;If you have registered before to install any of our apps, then you don’t need to register once again. Just log in using your previously indicated email or username and password.
+bad api credentials;Bad API credentials
+apply filter;Apply Filter
+
+## Payment sentences
+
+tariff plans;Tariff Plans
+plans options;Plans Options
+accceptable for;accceptable for the payment via credit cards only
+application was stopped;The application was stopped on
+checkout with 2co;Checkout with 2CO
+checkout with shopify;Checkout with Shopify
+current value;Current value
+declined;Declined
+last pay amount;Last pay amount
+last pay date;Last pay date
+limit overdraft notification;Limit Overdraft Notification
+no transactions;There are no transactions
+payment info;Payment Info
+plan has changed;Since you have changed tariff plan and %d days of old <strong>%s</strong> plan usage are left, your period of usage of <strong>%s</strong> plan is %s to %d days. More information can be found in <a href="%s" target="_blank">Terms</a>. If your payment period is expired, you will receive an email notification.
+prolong using;Prolong application usage period :
+prolond trial info;<span>( the remaining trial period won't be lost and will be added to chosen duration )</span>
+plan type;Pricing is based on tariff plans:
+plans have trial period;All the plans have a <strong>%d %s</strong> trial period
+trial till;Trial period expires on
+usage;Usage of the application is paid till
+use recurring payment;Use Recurring Payment
+recurring payment description;( By selecting this option, the payment will be automatically made via 2Checkout when the current payment period is expired )
+you have full access;You have full access to this application for unlimited time.
+your plan;Your tariff plan is <strong>%s</strong>
+your plan with options;Your tariff plan is <strong title="%s">%s</strong><span>Please hover the mouse pointer on the tariff's plan name to look at the details of the plan.</span>
+invoice id;Invoice ID
+order id;Order ID
+charge id;Charge id
+charge bill;Bill of Charge recurring cycle.
+recreate charge;Extend free period
+recreate charge description;( Click the button "Extend free period" to recreate charge and get an additional free period of app using )
+pay for overdraft limits;Pay $%s for overdraft limits of the previous %s.
+pay for shopify app;Recurring charge for application usage.
+payment for overdraft limits;Payment for overdraft limits
+payment for overdraft limits for;Payment for overdraft limits for %s
+payment history;Payment History
+payment info;Payment Info
+payment date;Payment Date
+basic plan;Basic plan
+payment status;Payment Status
+pending;Pending
+invoice details;Invoice Details
+charge details;Charge Details
+is free;Is free
+is visible;Is visible
+no payment history;No payment history
+statistics current month;Statistics for the current month
+statistics previous month;Statistics for the previous month
+suggestion for overdraft;<strong>Suggestion:</strong> to avoid extra costs you can change your tariff plan to the plan with a higher price, but where limits have a higher value (if the application has other tariff plans).
+total amount for overdraft;The total amount for overdraft payment
+you use recurrent payment;You use recurrent payment for pay for access to the application.
+suspend app if limit reached;Suspend the app if any limit is reached.
+suspend app description;You can set up this checkbox if you don't want to pay additionally the exceeding of any limits for the month determined for your tariff plan. In this case, the work of the app will be suspended up to the end of the month and then it will recommence again automatically.
+
+## BigCommerce
+
+bigcommerce auth;Bigcommerce <span>%s</span> Application Authentication
+bigcommerce account;Bigcommerce Account
+bigcommerce install;Bigcommerce <span>%s</span> Application Installation
+bigcommerce plugin;Bigcommerce %s Application
+api credentials;API Credentials
+api user;API User
+api token;API Token
+shop domain bc;Bigcommerce API Domain
+shop url bc;Bigcommerce API Domain <br />( e.g. mydomain.mybigcommerce.com , don't use myrealdomain.com ). <a href="http://ecommerce-pc.spur-i-t.com/plugin-center/default/index/page/bigcommerce/domain" target="_blank">Click here</a> for details.
+installed apps;Installed Applications
+not installed apps;Not Installed Applications
+configure api credentials;Configure API Credentials
+bc auth index page description;Bigcommerce has developed a new authentication mechanism for apps. That's why there is no need to use a standalone page to log in to this app anymore. You need to install the app in administrator's panel of your store in <b>APPS</b> section, which is displayed as a badge in the left side of the screen. If you have earlier been registered in our app using an old authentication method, then you need to reinstall the app. Data with statistics won't be lost if administrator's email is the same as it was indicated when registering of the app. If an e-mail in the app and e-mail of your store's administrator are different, so before reinstalling the app, in order to save statistics contact us by <a href="mailto:contact@spur-i-t.com">contact@spur-i-t.com</a> and write e-mail of your store's administrator and e-mail that was indicated earlier when registering of the app.
+
+## Magento
+
+magento auth;Magento <span>%s</span> Application Authentication
+magento account;Magento <span>%s <span>( <a href="%s">Edit Profile</a> )</span></span> account
+magento install;Magento <span>%s</span> Application Installation
+magento plugin;Magento %s Application
+api token; API Key
+
+## PrestaShop
+
+prestashop auth;PrestaShop <span>%s</span> Application Authentication
+prestashop account;PrestaShop <span>%s <span>( <a href="%s">Edit Profile</a> )</span></span> account
+prestashop install;PrestaShop <span>%s</span> Application Installation
+prestashop plugin;PrestaShop %s Application
+
+## OpenCart
+
+opencart auth;OpenCart <span>%s</span> Application Authentication
+opencart account;OpenCart <span>%s <span>( <a href="%s">Edit Profile</a> )</span></span> account
+opencart install;OpenCart <span>%s</span> Application Installation
+opencart plugin;OpenCart %s Application
+
+## Ecwid
+
+ecwid auth;Ecwid <span>%s</span> Application Authentication
+ecwid account;Ecwid <span>%s <span>( <a href="%s">Edit Profile</a> )</span></span> account
+ecwid install;Ecwid <span>%s</span> Application Installation
+ecwid plugin;Ecwid %s Application
+store id;Store ID <span>( your Store ID at ecwid.com )</span>
+order api secret key;Order API secret key
+ecwid registration info;The registration data, except Store ID field, is not associated with your account at ecwid.com, therefore, you can use the same or different registration data at ecwid.com
+the service spurit;"The service &quot;SpurIT&quot; is an independant company and is in no way directly associated with, nor a subsidiary company, or a branch of Ecwid."
+
+## Shopify
+
+shopify account;Shopify <span>%s</span> account
+shopify install;Shopify <span>%s</span> Application Installation
+shopify plugin;Shopify %s Application
+
+## Volusion
+
+volusion auth;Volusion <span>%s</span> Application Authentication
+volusion account;Volusion <span>%s <span>( <a href="%s">Edit Profile</a> )</span></span> account
+volusion install;Volusion <span>%s</span> Application Installation
+volusion plugin;Volusion %s Application
+volusion registration info;The registration data is not associated with your account at volusion.com, therefore, you can use the same or different registration data at volusion.com
+store domain;Store Domain
+v_login;Your Store Admin E-mail <span>( is required for access to API at volusion.com )</span>
+embed code info;Embed Code Info
+
+## Admin Side
+
+all platforms;All platforms
+all plugins;All applications
+all servers;All servers
+app name;App Name
+trial period;Trial period
+current plan;Current plan
+dialog box;Dialog box
+start date;Start date
+end date;End date
+diff with 7 days;Diff with stats for last 7 days
+
+# Dashboard
+now;For current day
+7d;For 7 days
+30d;For 30 days
+3m;For 3 month (90 days)
+6m;For 6 month (180 days)
+1y;For 1 year (365 days)
+all;For all time
+installs by platform;Installations by platforms
+installs by plugins;Installations by applications
+earned by platforms;Earned by platforms
+earned by plugins;Earned by applications
+servers time;Server's time
+
+# Authentication
+sign in to your account;Sign in to your account
+enter your name and password;Please enter your name and password to log in.
+you have some form errors;You have some form errors. Please check below.
+
+# Statistics
+apps stats;Apps Stats
+installs stats;Installations Stats
+plugin statistics;Application Statistics
+install statistics;Installation Statistics
+plugins are displayed for;The applications are displayed for
+chart of installations by days;Chart of installations by days
+no instances;There are no instances yet.
+total earned;Total Earned
+previous month revenue;Prev M Revenue
+current month alredy earned;Curr M Alredy Earned
+current month revenue planned;Curr M Revenue Planned
+next month revenue planned;Next M Revenue Planned
+date installed;Date Installed
+date deleted;Date Deleted
+last login;Last Login
+last pyment date;Last P Date
+next pyment date;Next P Date
+last pyment amount;Last P Amount
+total pyment amount;Total P Amount
+
+# Cron
+tasks statistics;Task's Statistics
+last started;Last started
+last finished;Last finished
+last failed;Last failed
+max exec time;Max exec time
+launch file;Launch file
+cron file;Cron file
+cron tasks;Cron Tasks
+time execution;Time execution
+exclude from stat;Exclude from statistics
+create new cron task;Create new cron task
+edit cron task;Edit cron task
+instance settings;Instance settings
+cron task has been successfully created;New cron task has been successfully created.
+cron task has been successfully updated;Cron task has been successfully updated.
+no cron tasks;There are no cron tasks yet.
+no statistics;There is no statistics yet.
+
+# Users
+access levels;Access Levels
+access level;Access level
+mailchimp synchronization;Mailchimp Synchronization
+news for all customers;News for all customers
+promo news;Promo news
+updates for app;Updates for app
+critical updates for app;Critical updates for app
+news type;News type
+mailchimp setting is not found;Mailchimp setting is not found.
+no new users;No new users
+delete from subscribers;Delete from subscribers
+delete from unsubscribers;Delete from unsubscribers
+show users to delete;Show users to delete
+no admins;There are no any admins yet.
+Full Name;Full Name
+first and last name;first and last name
+email of the new admin;email of the new admin
+unique nickname;unique nickname
+from 6 to 30 symbols;from 6 to 30 symbols
+Confirm Password;Confirm Password
+password again;enter password again
+Admin_login;Login
+add new admin;add new admin
+Password confirmation does not match;Password confirmation does not match
+add new user;Add new Admin
+uninstalled apps;Uninstalled apps
+create new user;Create new user
+total pay amount;Total pay amount
+installed plugins;Installed Applications
+
+# Options
+tariff plan options;Tariff Plan Options
+create new option;Create new option
+edit option;Edit option
+unit after;Unit after
+use for payment;Use for payment
+price for overdraft unit;Price for overdraft unit
+overdraft unit count;Overdraft unit count
+no options;There are no options yet.
+option has been successfully created;Option has been successfully created
+option has been successfully updated;Option has been successfully updated
+
+# plans
+create new plan;Create new plan
+no plans;There are no plans yet.
+plan has been successfully created;Plan has been successfully created
+plan has been successfully updated;Plan has been successfully updated
+
+# Templates
+email templates;Email Templates
+create new template;Create new template
+edit template;Edit template
+all templates;All templates
+all types;All types
+no templates;There are no templates yet.
+template has been successfully created;Template has been successfully created.
+template has been successfully updated;Template has been successfully updated.
+
+# Settings
+email settings;E-mail Settings
+general settings;General Settings
+send installation email;Send installation email
+send uninstallation email;Send uninstallation email
+send post-installation email;Send post-installation email
+send run out of expired email;"Send ( run out of &#47; expired ) &quot;paid till date&quot; email"
+send option overdraft email;Send option overdraft email
+cron section;Cron
+mailchimp section;Mailchimp
+notification section;E-Mail Notification
+options section;Plan's Options
+plugin section;Application
+webhooks section;Webhooks
+
+# Emails
+edit email;Edit Email
+list of emails;List of Emails
+All statuses;All statuses
+Creation Time;Creation Time
+Sent Time;Sent Time
+view message;view message
+no emails;There are no any emails yet.
+email body;Email Body
+sent by app;sent by app
+emails stats;Emails Stats
+emails statistics;Emails statistics
+chart of emails which have been sent by days;chart of Emails which have been sent by days
+
+# Webhooks
+any state;Any State
+Registered via Api;Registered via Api
+Callback Url;Callback Url
+Incoming time;Incoming time
+Sending time;Sending time
+Error Message;Error Message
+no webhooks;There are no any webhooks yet.
+Creation time;Creation time
+webhooks statistics;Webhooks statistics
+chart of webhooks which have been sent to apps by days;Chart of webhooks which have been sent to apps by days
+webhooks stats;Webhooks Stats
+Webhook id;Webhook id
+external webhooks;External Webhooks
+internal webhooks;Internal Webhooks
+
+#Access Levels
+Sorry, you do not have permissions to view this page.;Sorry, you do not have permissions to view this page.
+access denied;Access Denied
+level permissions has been successfully updated;Level permissions has been successfully updated
+edit level permissions;Edit level permissions
+Level Id;Level Id
+levels;Levels
+Delete Access Levels;Delete Access Levels
+Edit Access Levels;Edit Access Levels
+Create Access Levels;Create Access Levels
+Edit Levels Permissions;Edit Levels Permissions
+Detailed plugin's finance info;Detailed plugin's finance info
+Access Levels;Access Levels
+Finance info;Finance info
+edit permissions;Edit permissions
+add new level;Add new level

@@ -1,0 +1,4 @@
+.upsell-content{ float:left; }
+#spurit-upsell-container div#img{ min-height: 150px; height: auto !important; }
+#spurit-upsell-content > ul > li { height: auto !important; }
+#spurit-upsell-content .upsell-title {min-height: 40px;}

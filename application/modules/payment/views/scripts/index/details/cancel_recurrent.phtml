@@ -1,0 +1,7 @@
+<div class="cancel-recurrent">
+	<p><?php echo $this->translate( 'you use recurrent payment' ) ?></p>
+	<form action="<?php echo $this->cancelRecurrentUrl ?>" method="post">
+		<input type="hidden" name="transaction_id" value="<?php echo $this->transaction->id ?>" />
+		<input type="submit" id="btn" class="btn" value="Cancel Recurrent Payment" />
+	</form>
+</div>

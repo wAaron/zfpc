@@ -1,0 +1,68 @@
+<div class="top_panel">
+	<div class="wrapper">
+		<div class="top_links">
+			<ul>
+				<li class="i_22_logout">
+					<a href="<?php echo $this->PC_baseUrl .'prestashop/auth/logout/plugin/'. base64_encode( $this->plugin ) ?>">
+						<span class="label">Log out</span>
+					</a>
+				</li>
+				<li class="i_22_shopify">
+					<a href="http://<?php echo $this->shop ?>/" target="_blank">
+						<span class="label"><?php echo $this->translate( 'shop front-end' ) ?></span>
+					</a>
+				</li>
+				<li class="i_22_settings">
+					<a href="https://<?php echo $this->shop ?>/admin" target="_blank">
+						<span class="label"><?php echo $this->translate( 'shop administration' ) ?></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<header class="main_header">
+	<div class="wrapper">
+                <div class="logo">
+                    <img src="<?php echo $this->baseUrl() ?>/img/admin/logo.png">
+                </div>
+		<nav class="top_buttons">
+		<ul>
+			<li class="big_button">
+				<div class="out_border">
+					<div class="button_wrapper">
+						<div class="in_border">
+							<a href="http://spur-i-t.com/contact.php" target="_blank" class="the_button" title="Support">
+								<span class="i_32_inbox"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="big_button">
+				<div class="out_border">
+					<div class="button_wrapper">
+						<div class="in_border">
+							<a href="<?php echo $this->baseUrl( 'payment' ) ?>" class="the_button" id="payment-info-link" title="Payment Info">
+								<span class="i_32_dollar"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="big_button">
+				<div class="out_border">
+					<div class="button_wrapper">
+						<div class="in_border">
+							<a href="<?php echo $this->PC_baseUrl .'prestashop/auth/account/plugin/'. base64_encode( $this->plugin ) ?>"
+								class="the_button" title="Account" target="_blank">
+								<span class="i_32_account"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+		</nav>
+	</div>
+</header>

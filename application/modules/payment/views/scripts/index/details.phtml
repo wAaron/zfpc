@@ -1,0 +1,161 @@
+<table class="payment-details label" cellpadding="0" cellspacing="0" summary="payment details">
+	<tr>
+		<td class="payment-state">
+			<div class="wrapper">
+				<!-- In case a plan changed. -->
+				<?php if ( $this->planChanged ) : ?>
+					<fieldset>
+						<legend><?php echo $this->translate( 'message' ) ?></legend>
+						<p><?php echo $this->translate( 'plan has changed',
+							$this->oldRest, $this->settings->old_plan, $this->currentPlan->getName(), $this->direction, $this->newRest, $this->termsUrl
+						) ?></p>
+					</fieldset>
+				<?php endif ?>
+
+				<!-- Free plan section. -->
+				<?php if ( $this->currentPlan->isFree() ) : ?>
+					<!-- Overdrafts info. -->
+					<?php echo $this->partial( 'index/details/overdrafts_payment_info.phtml', array (
+						'transaction' => $this->transaction,
+						'lastPayDate' => $this->lastPayDate,
+						'lastPayAmount' => $this->lastPayAmount,
+						'lastPayOverdraftAmount' => $this->lastPayOverdraftAmount,
+						'overdraftUnpaidPeriod' => $this->overdraftUnpaidPeriod
+					) ) ?>
+
+					<!-- Plan's options. -->
+					<?php echo $this->partial( 'index/details/plans_options.phtml', array (
+						'currentMonthStatistics' => $this->currentMonthStatistics,
+						'previousMonthStatistics' => $this->previousMonthStatistics
+					) ) ?>
+
+					<!-- Overdraft payment. -->
+					<?php if ( $this->overdrafts ) : ?>
+						<div class="overdrafts">
+							<!-- The 2CO form. -->
+							<?php echo $this->partial( 'index/details/2coForm.phtml', array (
+								'platform' => $this->platform,
+								'plugin' => $this->plugin->name,
+								'shop' => $this->shop->name,
+								'currentPlan' => $this->currentPlan->getName(),
+								'overdrafts' => $this->overdrafts,
+								'overdraftTotalPrice' => $this->overdraftTotalPrice,
+								'disableMainProduct' => true
+							) ) ?>
+						</div>
+
+						<!-- The 2CO image. -->
+						<?php echo $this->partial( 'index/details/2coImage.phtml', array (
+							'host' => $this->host
+						) ) ?>
+						<div class="clear"></div>
+					<?php endif ?>
+
+				<!-- Non free plan section. -->
+				<?php else : ?>
+					<!-- Payment info. -->
+					<?php echo $this->partial( 'index/details/payment_info.phtml', array (
+						'transaction' => $this->transaction,
+						'lastPayDate' => $this->lastPayDate,
+						'lastPayAmount' => $this->lastPayAmount,
+						'lastPayOverdraftAmount' => $this->lastPayOverdraftAmount,
+						'paidTill' => $this->paidTill,
+						'formattedPaidTill' => $this->formattedPaidTill,
+						'trialPeriod' => $this->settings->trial_period
+					) ) ?>
+
+					<!-- Plan's options. -->
+					<?php echo $this->partial( 'index/details/plans_options.phtml', array (
+						'currentMonthStatistics' => $this->currentMonthStatistics,
+						'previousMonthStatistics' => $this->previousMonthStatistics
+					) ) ?>
+
+					<!-- In case recurrent payment is used. -->
+					<?php if ( $this->recurrence ) : ?>
+						<!-- Cancel recurrent. -->
+						<?php echo $this->partial( 'index/details/cancel_recurrent.phtml', array (
+							'transaction' => $this->transaction,
+							'cancelRecurrentUrl' => $this->cancelRecurrentUrl
+						) ) ?>
+
+						<!-- Overdraft payment. -->
+						<?php if ( $this->overdrafts ) : ?>
+							<div class="overdrafts">
+								<!-- The 2CO form. -->
+								<?php echo $this->partial( 'index/details/2coForm.phtml', array (
+									'platform' => $this->platform,
+									'plugin' => $this->plugin->name,
+									'shop' => $this->shop->name,
+									'currentPlan' => $this->currentPlan->getName(),
+									'disableMainProduct' => true,
+									'overdrafts' => $this->overdrafts,
+									'overdraftTotalPrice' => $this->overdraftTotalPrice
+								) ) ?>
+							</div>
+
+							<!-- The 2CO image. -->
+							<?php echo $this->partial( 'index/details/2coImage.phtml', array (
+								'host' => $this->host
+							) ) ?>
+							<div class="clear"></div>
+						<?php endif ?>
+
+					<!-- Manual prolonging section. -->
+					<?php else : ?>
+						<div class="prolong">
+							<!-- Product list to select. -->
+							<?php echo $this->partial( 'index/details/product_select.phtml', array (
+								'plans' => $this->plans,
+								'currentPlan' => $this->currentPlan->getName(),
+								'trialPeriod' => $this->settings->trial_period
+							) ) ?>
+
+							<!-- The 2CO form. -->
+							<?php echo $this->partial( 'index/details/2coForm.phtml', array (
+								'platform' => $this->platform,
+								'plugin' => $this->plugin->name,
+								'shop' => $this->shop->name,
+								'currentPlan' => $this->currentPlan->getName(),
+								'overdrafts' => $this->overdrafts,
+								'overdraftTotalPrice' => $this->overdraftTotalPrice
+							) ) ?>
+						</div>
+
+						<!-- The 2CO image. -->
+						<?php echo $this->partial( 'index/details/2coImage.phtml', array (
+							'host' => $this->host
+						) ) ?>
+						<div class="clear"></div>
+					<?php endif ?>
+
+					<!-- Transaction history. -->
+					<?php echo $this->partial( 'index/details/transaction_history.phtml', array (
+						'history' => $this->history
+					) ) ?>
+				<?php endif ?>
+			</div>
+		</td>
+		<td class="payment-plans">
+			<div class="wrapper">
+				<!-- Payment plans. -->
+				<?php echo $this->partial( 'index/details/payment_plans.phtml', array (
+					'plans' => $this->plans,
+					'currentPlan' => $this->currentPlan->getName(),
+					'currentPlanOptions' => $this->currentPlanOptions,
+					'currentPlanOptionsText' => $this->currentPlanOptionsText,
+					'trialPeriod' => $this->settings->trial_period,
+					'suspendApp' => $this->settings->suspend_app,
+					'pcBaseURL' => $this->pcBaseURL
+				) ) ?>
+			</div>
+		</td>
+	</tr>
+</table>
+<div class="clear"></div>
+<!-- Public content. -->
+<?php echo $this->partial( 'index/details/public.phtml', array (
+	'css' => $this->css,
+	'iecss' => $this->iecss,
+	'js' => $this->js
+) ) ?>
+<iframe id="pc-frame" data-instance-id="<?php echo $this->instanceId ?>"></iframe>

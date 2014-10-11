@@ -1,0 +1,178 @@
+<div class="admin-side">
+	<div class="users">
+		<?php if ( $this->message ) : ?>
+			<div class="alert alert-success">
+				<button data-dismiss="alert" class="close">×</button>
+				<i class="fa fa-check-circle"></i>
+				<?php echo $this->message ?>
+			</div>
+		<?php endif ?>
+		<p>
+			<a href="#" class="btn btn-warning" id="synchronize">
+				<i class="clip-file-excel"></i>
+				<?php echo $this->translate( 'generate' ) ?>
+			</a>
+			<a href="#" class="btn btn-primary" id="to-delete-users">
+				<i class="clip-user-cancel"></i>
+				<?php echo $this->translate( 'show users to delete' ) ?>
+			</a>
+		</p>
+		<div class="row">
+			<div class="col-md-7">
+				<?php if ( $this->files ) : ?>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-external-link-square"></i>
+							<?php echo $this->translate( 'files' ) ?>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<?php echo $this->formFilter ?>
+							</div>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th><?php echo $this->translate( 'file' ) ?></th>
+										<th><?php echo $this->translate( 'actions' ) ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ( $this->files as $file ) : ?>
+										<tr>
+											<td><?php echo $file ?></td>
+											<td class="actions">
+												<?php echo $this->link(
+													'<i class="clip-download"></i>',
+													$this->url( array (
+														'action' => 'download',
+														'type' => 'mailchimp',
+														'name' => base64_encode( $file )
+													) ),
+													array (
+														'class' => 'btn-sm btn-primary tooltips',
+														'data-placement' => 'top',
+														'data-original-title' => $this->translate( 'download' )
+													)
+												) ?>
+												<?php echo $this->link(
+													'<i class="fa fa-times fa fa-white"></i>',
+													$this->url( array (
+														'action' => 'remove',
+														'type' => 'mailchimp',
+														'name' => base64_encode( $file )
+													) ),
+													array (
+														'class' => 'remove btn-sm btn-bricky tooltips',
+														'data-placement' => 'top',
+														'data-original-title' => $this->translate( 'remove' )
+													)
+												) ?>
+											</td>
+										</tr>
+									<?php endforeach ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				<?php endif ?>
+				</div>
+				<div class="col-md-5" id="mailchimp-users-to-delete"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * User library.
+	 * @var object
+	 */
+	var Users = new Object();
+
+	/**
+	 * Loads users through ajax and fills container.
+	 * Users to delete from mailchimp.
+	 */
+	Users.loadUsersToDelete = function ()
+	{
+		var url = '<?php echo $this->url( array (
+			'action' => 'mailchimp-users-to-delete'
+	   ) ) ?>';
+	   url += '/platform_id/' + $('#platform').val();
+	   url += '/news_type/' + $('#news_type').val();
+	   if ( !$('#plugin').attr( 'disabled' ) ) {
+	   	url += '/plugin_id/' + $('#plugin').val();
+	   }
+	   Admin.enableLoader( '#mailchimp-users-to-delete' );
+		$.get( url, function ( data ) {
+			$('#mailchimp-users-to-delete').html( data );
+		} );
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function ()
+	{
+		var platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+		// Event for form submission.
+		$('#synchronize').click( function () {
+			$('#filter-form').submit();
+			return false;
+		} );
+		// Event for user to delete loading.
+		$('#to-delete-users').click( function () {
+			Users.loadUsersToDelete();
+			return false;
+		} );
+		// Event for platform changin.
+		$('#platform').change( function () {
+			var ids = platformPlugins[ $( this ).val() ];
+			if ( ids != undefined ) {
+				// Show plugins for selected platform only.
+				$('#plugin option').each( function ( index, element ) {
+					if ( ids.indexOf( $( element ).attr( 'value' ) ) == -1 ) {
+						$( element ).css( 'display', 'none' );
+					} else {
+						$( element ).css( 'display', 'block' );
+					}
+				} );
+				// Set first plugin in case platform changed.
+				if ( ( $('#news_type').val() == 'update news' ) || ( $('#news_type').val() == 'critical updates' ) ) {
+					if ( ids.indexOf( $('#plugin').val() ) == -1 ) {
+						var firstOption = $('#plugin').find( 'option[style*="block"]' ).get( 0 );
+						$('#plugin').val( $( firstOption ).val() );
+					}
+				}
+			}
+			else {
+				$('#plugin option').each( function ( index, element ) {
+					$( element ).css( 'display', 'block' );
+				} );
+			}
+		} );
+		// Event for news type changin.
+		$('#news_type').change( function () {
+			var enable = (
+				   ( $( this ).val() == 'update news' )
+				|| ( $( this ).val() == 'critical updates' )
+				|| ( $( this ).val() == 'uninstalled apps' )
+			);
+			if ( enable ) {
+				$('#plugin').attr( 'disabled', false );
+			} else {
+				$('#plugin').attr( 'disabled', true );
+			}
+		} );
+		// File deleting confirmation.
+		$('.remove').click( function () {
+			return confirm( '<?php echo $this->translate( 'are you sure' ) ?>' );
+		} );
+		// Init.
+		if ( ( $('#news_type').val() == 'update news' ) || ( $('#news_type').val() == 'critical updates' ) ) {
+			$('#plugin').attr( 'disabled', false );
+		}
+		Users.loadUsersToDelete();
+	} );
+
+</script>

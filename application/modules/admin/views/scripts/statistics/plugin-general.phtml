@@ -1,0 +1,79 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-external-link-square"></i>
+		<?php echo $this->translate( 'plugins' ) ?>
+		<div class="panel-tools">
+			<a class="btn btn-xs btn-link panel-refresh" id="plugin-general-reload" href="#">
+				<i class="fa fa-refresh"></i>
+			</a>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="table-filter platform-filter">
+					<?php echo $this->translate( 'plugins are displayed for' ) ?>
+					<select name="platform" class="form-control">
+						<option value=""><?php echo $this->translate( 'all platforms' ) ?></option>
+						<?php foreach ( $this->platforms as $platform ) : ?>
+							<?php $selected = ( $platform->name == $this->platform ) ? ' selected="selected"' : ''; ?>
+							<option value="<?php echo $platform->name ?>"<?php echo $selected ?>>
+								<?php echo $platform->title ?>
+							</option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>
+		</div>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th><?php echo $this->translate( 'app name' ) ?></th>
+					<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+						<th class="center"><?php echo $this->translate( 'total earned' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'previous month revenue' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'current month alredy earned' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'current month revenue planned' ) ?></th>
+						<th class="center"><?php echo $this->translate( 'next month revenue planned' ) ?></th>
+					<?php endif ?>
+					<th class="center"><?php echo $this->translate( 'installed' ) ?></th>
+					<th class="center"><?php echo $this->translate( 'deleted' ) ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $this->plugins as $_plugin ) : ?>
+					<tr>
+						<td>
+							<div>
+								<a href="<?php echo $_plugin['id']?>">
+									<?php echo $_plugin['name'] ?>
+								</a>
+							</div>
+						</td>
+						<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+							<td class="center"><?php echo $_plugin['totalEarned'] ?></td>
+							<td class="center"><?php echo $_plugin['previousMonthRevenue'] ?></td>
+							<td class="center"><?php echo $_plugin['currentMonthEarned'] ?></td>
+							<td class="center"><?php echo $_plugin['currentMonthPlanned'] ?></td>
+							<td class="center"><?php echo $_plugin['nextMonthPlanned'] ?></td>
+						<?php endif ?>
+						<td class="center"><?php echo $_plugin['installed'] ?></td>
+						<td class="center"><?php echo $_plugin['uninstalled'] ?></td>
+					</tr>
+				<?php endforeach ?>
+				<tr>
+					<td><?php echo $this->translate( 'total' ) ?></td>
+					<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+						<td class="center"><?php echo $this->total['totalEarned'] ?></td>
+						<td class="center"><?php echo $this->total['previousMonthRevenue'] ?></td>
+						<td class="center"><?php echo $this->total['currentMonthEarned'] ?></td>
+						<td class="center"><?php echo $this->total['currentMonthPlanned'] ?></td>
+						<td class="center"><?php echo $this->total['nextMonthPlanned'] ?></td>
+					<?php endif ?>
+					<td class="center"><?php echo $this->total['installed'] ?></td>
+					<td class="center"><?php echo $this->total['uninstalled'] ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

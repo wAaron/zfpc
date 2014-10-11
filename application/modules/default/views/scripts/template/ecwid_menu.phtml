@@ -1,0 +1,29 @@
+<div class="menu">
+	<ul>
+		<li><a href="https://my.ecwid.com/cp" target="_blank">
+			<?php echo $this->translate( 'shop administration' ) ?>
+		</a></li>
+		<li class="separator">|</li>
+		<li><a href="<?php echo $this->PC_baseUrl .'ecwid/auth/account/plugin/'. base64_encode( $this->plugin ) ?>"<?php if ( $this->target !== false ) : ?> target="_blank"<?php endif ?>>Account</a></li>
+		<li class="separator">|</li>
+		<li><a href="<?php echo $this->baseUrl( 'payment' ) ?>" id="payment-info-link">Payment Info</a></li>
+		<li class="separator">|</li>
+		<li><a href="http://spur-i-t.com/contact.php" target="_blank">Contact Us</a></li>
+		<li class="separator">|</li>
+		<li><a href="<?php echo $this->PC_baseUrl .'ecwid/auth/logout/plugin/'. base64_encode( $this->plugin ) ?>">Log out</a></li>
+	</ul>
+</div>
+<style type="text/css">
+/*<![CDATA[*/
+
+	.menu { float: right; }
+	.menu ul { margin: 4px 0px 0px 0px; list-style: none; }
+	.menu li { display: inline-block; margin: 0px; padding-right: 9px; color: #ffffff; }
+	.menu li a { color: #afd4e2; text-decoration: none; font-size: 13px; font-family: verdana, sans-serif; }
+	.menu li a:hover { text-decoration: underline; }
+	.menu .separator { width: 1px; padding-top: 2px; font-size: 11px; color: #afd4e2; }
+	.volusion .menu ul { margin-right: 20px; }
+	.volusion .menu li { padding-left: 1px; }
+
+/*]]>*/
+</style>

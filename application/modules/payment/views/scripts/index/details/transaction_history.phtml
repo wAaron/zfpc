@@ -1,0 +1,69 @@
+<?php if ( $this->history ) : ?>
+	<a href="#" id="payment-history-link"><?php echo $this->translate( 'payment history' ) ?></a>
+	<div id="payment-history">
+		<table cellpadding="0" cellspacing="0" summary="payment history">
+			<tr>
+				<th><?php echo $this->translate( 'invoice id' ) ?></th>
+				<th><?php echo $this->translate( 'amount' ) ?></th>
+				<th><?php echo $this->translate( 'payment info' ) ?></th>
+				<th><?php echo $this->translate( 'payment date' ) ?></th>
+				<th><?php echo $this->translate( 'payment status' ) ?></th>
+			</tr>
+			<?php foreach ( $this->history as $_transaction ) :
+				Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->setTransaction( $_transaction );
+				?>
+				<tr>
+					<td><?php echo Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->transactionDetail( 'invoice_id' ) ?></td>
+					<td><?php
+
+						$matches = array ();
+						// Recurrent installment.
+						if ( preg_match( '/item_usd_amount_1=(\d+)/', $_transaction->details, $matches ) ) {
+							echo '$'.Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->transactionDetail( 'item_usd_amount_1' );
+						}
+						// Standard transaction.
+						else {
+							echo '$'.Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->transactionDetail( 'total' );
+							if ( preg_match_all( '/li_[1-9]_price=(\d+)/', $_transaction->details, $matches ) ) {
+								foreach ( $matches[1] as $_price ) {
+									echo '<br />$'.$_price;
+								}
+							}
+						}
+
+					?></td>
+					<td class="payment-history-name"><?php
+
+						$matches = array ();
+						// Recurrent installment.
+						if ( preg_match( '/item_name_1=([\s\w]+)/', $_transaction->details, $matches ) ) {
+							echo Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->transactionDetail( 'item_name_1' );
+						}
+						// Standard transaction.
+						else {
+							echo Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->transactionDetail( 'name' );
+							if ( preg_match_all( '/li_[1-9]_name=([\s\w]+)/', $_transaction->details, $matches ) ) {
+								foreach ( $matches[1] as $_name ) {
+									echo '<br />'.$_name;
+								}
+							}
+						}
+
+					?></td>
+					<td><?php echo $_transaction->date ?></td>
+					<td><?php
+
+						if ( ( $_transaction->refunded == 1 ) || ( $_transaction->invoice_status == 'declined' ) ) :
+							echo $this->translate( 'declined' );
+						elseif ( $_transaction->fraud_status == 'pass' ) :
+							echo $this->translate( 'accepted' );
+						elseif ( !$_transaction->fraud_status || $_transaction->fraud_status == 'wait' ) :
+							echo $this->translate( 'pending' );
+						endif
+
+					?></td>
+				</tr>
+			<?php endforeach ?>
+		</table>
+	</div>
+<?php endif ?>

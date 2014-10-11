@@ -1,0 +1,42 @@
+<div class="magento">
+	<h1><?php echo $this->translate( 'Receipt of the API Credentials' ) ?></h1>
+	<div class="page">
+		<div class="container">
+			<p><b>You can find the API Credentials by the following way:</b></p>
+			<br />
+			<p><b><span style="color: #ff6600">1)</span>   First an API role needs to be added. Login to the Magento Admin Panel and navigate to System > Web Services > Roles.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/magento/m_1.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">2)</span>	This page lists the current API roles. If there none listed yet, click on Add New Role.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/magento/m_2.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">3)</span>	Every role needs a name. This can be anything. Just make sure it is descriptive enough for yourself.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/magento/m_3.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">4)</span>	The second tab on the left (Role Resources) allows you to select which resources should be available for users with this role. While you can select exactly which privileges are given, we recommend you select All unless you're willing to spend hours with experimenting.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/magento/m_4.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">5)</span>	Now that the role is created, you can add an user that makes use of this role. The fields First Name, Last Name and Email just need to be filled in with any value you like. Make sure the User Name and Api Key are secure enough.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/magento/m_5.png' ) ?>" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">6)</span>	The second tab on the left is called User Role, and that's where you select the role earlier created.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/magento/m_6.png' ) ?>" /></p>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+/*<![CDATA[*/
+
+	<?php echo $this->css ?>
+
+/*]]>*/
+</style>
+<!--[if gte IE 7]>
+<style type="text/css">
+/*<![CDATA[*/
+
+	<?php echo $this->iecss ?>
+
+/*]]>*/
+</style>
+<![endif]-->

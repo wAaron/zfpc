@@ -1,0 +1,68 @@
+/* Common styles */
+html { min-height: 100%; }
+body {
+	min-height: 100%; margin: 0px; 
+	font-size: 14px; font-family: tahoma,geneva,verdana,sans-serif; color: #000000;
+	background: #7AAED2 -moz-linear-gradient( center top , #1A5D21, #5C9462 ) repeat-x scroll 0px 0px;
+	background: #7AAED2 -o-linear-gradient( top, #1A5D21, #5C9462 ) repeat-x scroll 0px 0px;
+	background: #7AAED2 -webkit-linear-gradient( top, #1A5D21, #5C9462 ) repeat-x scroll 0px 0px;
+}
+
+.ecwid .container { margin-bottom: 25px; padding: 20px 30px; border-radius: 2px; background-color: #ffffff; }
+.ecwid .auth, .ecwid .install, .ecwid .account, .ecwid .configure, .ecwid .page { width: 620px; margin: 0px auto; }
+.ecwid #login-label, .ecwid #register-label, .ecwid #install-label { height: 3px; }
+
+.copyright { padding-bottom: 10px; text-align: center; font-size: 13px; color: #ffffff; }
+.copyright a { color: #ffffff; }
+
+/* Authentication */
+.ecwid h1 { margin: 0px; padding: 15px 0px 20px 0px; text-align: center; font-weight: normal; font-size: 23px; color: #ffffff; }
+.ecwid h1 span { display: block; font-weight: bold; }
+.ecwid h1 span span { display: inline; font-weight: normal; }
+.ecwid h1 span a { text-decoration: none; color: #e5ae40; }
+.ecwid h2 { margin: 0px; padding: 0px; text-align: center; font-size: 22px; color: #f7b247; }
+.ecwid .or { display: block; float: left; padding-left: 20px; font-weight: bold; font-size: 22px; color: #cccccc; }
+.ecwid .login { float: left; width: 250px; }
+.ecwid .register { float: right; width: 250px; }
+.ecwid .register .terms { font-size: 13px; margin-right: -20px; }
+.ecwid .register dl { margin-bottom: 5px; }
+
+/* Account */
+.ecwid .account ul { list-style: none; padding: 10px; border-radius: 2px; background-color: #ffffff; }
+.ecwid .account li { padding: 10px; border-bottom: 1px solid #f4f4f4; color: #444444; }
+.ecwid .account li:nth-child(odd) { background-color: #f9f9f9; }
+.ecwid .account h3 { float: left; margin: 0px; padding: 0px; color: #777777; }
+.ecwid .account li a {
+	font-size: 13px; color: #e5ae40;
+	text-shadow: 1px 1px 0px #eeeeee;
+}
+.ecwid .account h3 a { font-size: 17px; font-weight: bold; }
+.ecwid .account li h3 + a, .ecwid .account li h3 + a + a { display: block; float: right; padding-left: 10px; font-weight: bold; }
+
+/* Simple page */
+.ecwid .page { width: 800px; }
+.ecwid .page .container { padding: 10px 20px; }
+
+/* Form and elements */
+.ecwid-form { margin-top: 15px; padding: 10px; background-color: #ffffff; border-radius: 2px; }
+.ecwid form a { color: #f4a022; }
+.ecwid form input[type="text"], form input[type="password"] {
+	width: 98%;
+}
+.ecwid form label { color: #444444; }
+.ecwid form input[type="button"], .ecwid form input[type="submit"], .ecwid form button {
+	border: none;
+	box-shadow: none;
+	border: 1px solid #BBBBBB;
+	color: #1E7EC8;
+	font-weight: normal;
+	font-size: 14px;
+}
+.ecwid form .description, 
+.ecwid #shop-label span, 
+.ecwid #api_user-label span,
+.ecwid #api_password-label span,
+.ecwid #shop_domain_displayed-label span,
+.ecwid #api_key-label span
+{ font-size: 13px; color: #aaaaaa; }
+.ecwid form .description { text-align: justify; }

@@ -1,0 +1,9 @@
+html { height: 100%; overflow: scroll; }
+body { min-height: 100%;}
+body {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#004B80', endColorstr='#7AAED2');
+}
+.volusion form input[type="button"], .volusion form input[type="submit"], .volusion form button {
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	background-color: #bfd345;
+}

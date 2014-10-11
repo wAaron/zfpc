@@ -1,0 +1,173 @@
+<?php echo $this->headLink()->appendStylesheet('public/css/clear.css'); ?>
+
+<div class="admin-side">
+	<div class="emails">
+
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'emails' ) ?>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<?php echo $this->formFilter ?>
+					</div>
+
+					<table class="table table-hover" id="emails">
+						<?php if ( count( $this->emails ) ) : ?>
+						<thead>
+						<tr>
+							<th><?php echo $this->translate( 'Platform' ) ?></th>
+							<th><?php echo $this->translate( 'Plugin' ) ?></th>
+							<th><?php echo $this->translate( 'From' ) ?></th>
+							<th><?php echo $this->translate( 'To' ) ?></th>
+							<th><?php echo $this->translate( 'Subject' ) ?></th>
+							<th><?php echo $this->translate( 'Priority' ) ?></th>
+							<th><?php echo $this->translate( 'Status' ) ?></th>
+							<th><?php echo $this->translate( 'Creation Time' ) ?></th>
+							<th><?php echo $this->translate( 'Sent Time' ) ?></th>
+							<th><?php echo $this->translate( 'Actions' ) ?></th>
+						</tr>
+						</thead>
+						<tbody>
+
+						<?php foreach ( $this->emails as $email ) : ?>
+							<tr>
+								<td class="tpl-platform"><?php echo $email['platform'] ? $email['platform'] : $this->translate( 'system' );  ?></td>
+								<td class="tpl-plugin"><?php echo $email['plugin'] ?></td>
+								<td class="tpl-from"><?php echo $email['from'] ?></td>
+								<td class="tpl-to"><?php echo $email['to'] ?></td>
+								<td class="tpl-subject"><?php echo $email['subject'] ?></td>
+								<td class="tpl-priority"><?php echo $email['priority'] ?></td>
+								<td class="tpl-status"><?php echo $email['status'] ?></td>
+								<td class="tpl-create_time"><?php echo $email['create_time'] ?></td>
+								<td class="tpl-sent_time"><?php echo $email['sent_time'] ?></td>
+								<td class="actions">
+									<?php echo $this->link(
+										'<i class="fa fa-share"></i>',
+										$email['id'],
+										array (
+											'class' => 'view btn-sm btn-info tooltips',
+											'data-placement' => 'top',
+											'data-original-title' => $this->translate( 'view message' )
+										)
+									) ?>
+									<?php if ( $this->isSuperAdmin  ) : ?>
+										<?php echo $this->link(
+											'<i class="fa fa-edit"></i>',
+											$email['id'],
+											array (
+												'class' => 'edit btn-sm btn-teal tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit' )
+											)
+										) ?>
+									<?php endif ?>
+									<?php if ( $this->isSuperAdmin) : ?>
+										<?php echo $this->link(
+											'<i class="fa fa-times fa fa-white"></i>',
+											$email['id'],
+											array (
+												'class' => 'delete btn-sm btn-bricky tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'delete' )
+											)
+										) ?>
+									<?php endif ?>
+								</td>
+							</tr>
+						<?php endforeach ?>
+						<?php else : ?>
+							<div class="alert alert-info">
+								<i class="fa fa-info-circle"></i>
+								<?php echo $this->translate( 'no emails' ) ?>
+							</div>
+						<?php endif ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<?php echo $this->emails ?>
+
+	</div>
+	<div id="email-view"></div>
+</div>
+<script type="text/javascript">
+	/**
+	 * view email url.
+	 * @var string
+	 */
+	Admin.viewUrl = '<?php echo $this->url( array (
+		'action' => 'view'
+	) ) ?>';
+
+	/**
+	 * Edit email url.
+	 * @var string
+	 */
+	Admin.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+	/**
+	 * Delete email url.
+	 * @var string
+	 */
+	Admin.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+	/**
+	 * Platform with bound ids to it.
+	 * @var json
+	 */
+	Admin.platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+
+	/**
+	 * Calls a dialog-box having set styles beforehand.
+	 */
+	Admin.setFormExtendedEvents = function ()
+	{
+		$('#dialog-box label.col-sm-4').each( function ( index, element ) {
+			$( element ).removeClass( 'col-sm-4' );
+			$( element ).addClass( 'col-sm-3' );
+		} );
+
+		$('#dialog-box').attr( 'data-width', '800' );
+		$('#dialog-box').modal();
+		$('.modal-footer').show();
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function ()
+	{
+		$('a.edit').click( Admin.standardEditAction );
+		$('a.delete').click( Admin.standardDeleteAction );
+
+		// Event for statistics link.
+		$('a.view').click( function () {
+			var url = Admin.viewUrl +'/id/'+ $( this ).attr( 'href' );
+			$.get( url, function ( data ) {
+				$('#modal-title').html( '<?php echo $this->translate( 'email body' ) ?>' );
+				$('#modal-content').html( data );
+				$('#dialog-box').attr( 'data-width', '800' );
+				$('#dialog-box').modal();
+				$('.modal-footer').hide();
+			} );
+			return false;
+		} );
+
+	} );
+
+	// Event for submit button.
+	$('#filter').click( function ( event ) {
+		$('#filter-form').submit();
+	} );
+	<?php if ( $this->filtered ) : ?>
+	Admin.filteredPaginationEvents();
+	<?php endif ?>
+
+</script>

@@ -1,0 +1,3 @@
+form input[type="button"], form input[type="submit"], form button {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F8F8F8', endColorstr='#ECECEC');	
+}

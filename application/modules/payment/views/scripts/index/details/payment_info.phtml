@@ -1,0 +1,36 @@
+<?php
+
+	$paidPeriod = $wasPayment = false;
+	// Transaction.
+	if ( $this->transaction ) {
+		$wasPayment = true;
+		$paidPeriod = (
+				!$this->transaction->refunded
+			&& ( $this->transaction->fraud_status == 'pass' )
+			&& ( $this->transaction->invoice_status != 'declined' )
+		);
+	}
+	// Charge.
+	else if ( $this->charge ) {
+		$wasPayment = true;
+		$paidPeriod = (
+			$this->charge->status == 'active'
+		);
+	}
+
+?>
+<fieldset>
+	<legend class="tab_label">
+		<b><?php echo $this->translate( 'payment info' ) ?></b>
+	</legend>
+	<?php if ( $this->paidTill < time() ) : ?>
+		<p><?php echo $this->translate( 'application was stopped' ) ?> : <?php echo $this->formattedPaidTill ?></p>
+	<?php else : ?>
+		<p><?php echo $this->translate( $wasPayment ? 'usage' : 'trial till' ) ?> : <?php echo $this->formattedPaidTill ?></p>
+	<?php endif ?>
+	<?php if ( $paidPeriod ) : ?>
+		<p><?php echo $this->translate( 'last pay date' ) ?> : <?php echo $this->lastPayDate ?></p>
+		<p><?php echo $this->translate( 'last pay amount' ) ?> : <?php echo $this->lastPayAmount ?>
+			<?php if ( $this->lastPayOverdraftAmount ) : echo ' and $'. $this->lastPayOverdraftAmount .' ( for overdraft limits. )'; endif ?></p>
+	<?php endif ?>
+</fieldset>

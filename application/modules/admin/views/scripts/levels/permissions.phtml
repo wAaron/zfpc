@@ -1,0 +1,34 @@
+<?php if ( $this->message ) : ?>
+	<div class="alert alert-success">
+		<button data-dismiss="alert" class="close">×</button>
+		<i class="fa fa-check-circle"></i>
+		<?php echo $this->message ?>
+	</div>
+<?php else : ?>
+<?php
+echo $this->headScript()->appendFile('public/js/admin/jquery-tree/jquery.tree.js','text/javascript');
+echo $this->headScript()->appendFile('public/js/admin/jquery-tree/jquery.treecheckbox.js','text/javascript');
+echo $this->headLink()->appendStylesheet('//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
+?>
+
+<form action="<?php echo $this->url(array(
+	'module' => 'admin',
+	'controller' => 'levels',
+	'action' => 'permissions'
+));?>" method="post" id="level-edit-permissions-form">
+<?php
+echo $this->ResourcesTree($this->resources);
+echo $this->formHidden('level_id', $this->level->id);
+?>
+</form>
+<?php endif;?>
+
+<script>
+$(function(){
+	$("ul#resources_tree").tree({
+		collapsible : false,
+		dnd : false,
+		selectable : false
+	});
+});
+</script>

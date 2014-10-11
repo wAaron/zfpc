@@ -1,0 +1,155 @@
+<div class="admin-side">
+	<div class="transactions">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-external-link-square"></i>
+				<?php echo $this->translate( 'invoices' ) ?>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<?php echo $this->formFilter ?>
+				</div>
+				<table class="table table-hover" id="transactions">
+					<thead>
+						<tr>
+							<th><?php echo $this->translate( 'platform' ) ?></th>
+							<th><?php echo $this->translate( 'invoice' ) ?></th>
+							<th class="center"><?php echo $this->translate( 'amount' ) ?></th>
+							<th><?php echo $this->translate( 'user' ) ?></th>
+							<th><?php echo $this->translate( 'plugin' ) ?></th>
+							<th><?php echo $this->translate( 'payment info' ) ?></th>
+							<th class="center"><?php echo $this->translate( 'recurrent' ) ?></th>
+							<th><?php echo $this->translate( 'payment date' ) ?></th>
+							<th><?php echo $this->translate( 'payment status' ) ?></th>
+							<th><?php echo $this->translate( 'details' ) ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if ( $this->paginator->getTotalItemCount() ) : ?>
+							<?php foreach ( $this->paginator->getCurrentItems() as $invoice ) : ?>
+								<tr>
+									<td><?php echo ucfirst( $invoice->platform ) ?></td>
+									<td><?php echo $invoice->invoice_id ?></td>
+									<td class="center"><?php echo $invoice->amount ?></td>
+									<td>
+										<?php
+
+											$email = '<div class=\'nowrap\'>'. $this->translate( 'email' ) .': <a href=\'mailto:'. $invoice->email .'\'>'. $invoice->email .'</a></div>';
+											if ( preg_match( '/\w+\.\w+/', $invoice->shop ) ) {
+												$shop = '<div class=\'nowrap\'>'. $this->translate( 'shop' ) .': <a href=\'http://'. $invoice->shop .'\' target=\'_blank\'>'. $invoice->shop .'</a></div>';
+											} else {
+												$shop = '<div class=\'nowrap\'>'. $this->translate( 'shop' ) .': '. $invoice->shop .'</div>';
+											}
+											$popoverContent = $email . $shop;
+
+										?>
+										<div class="popovers" data-placement="top" data-trigger="click"
+										 data-original-title="<?php echo $this->translate( 'details' ) ?>"
+										 data-content="<?php echo $popoverContent ?>"
+										><?php echo $invoice->user ?></div>
+									</td>
+									<td><?php echo $invoice->plugin ?></td>
+									<td><?php
+
+										$matches = array ();
+										preg_match( '/(name|li_\n+_description)=(.*)/', $invoice->details, $matches );
+										echo $matches[2];
+
+									?></td>
+									<td class="center"><?php echo $invoice->recurring ? $this->translate( 'yes' ) : $this->translate( 'no' ) ?></td>
+									<td><?php echo $invoice->date ?></td>
+									<td><?php echo $invoice->invoice_status ?></td>
+									<td>
+										<?php echo $this->link(
+											'<i class="clip-attachment"></i>',
+											$invoice->id .':'. $invoice->platform,
+											array (
+												'class' => 'view btn-sm btn-info tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'view' )
+											)
+										) ?>
+										<div class="invoice-details">
+											<?php echo $invoice->details ?>
+										</div>
+									</td>
+								</tr>
+							<?php endforeach ?>
+						<?php else : ?>
+							<tr><td colspan="10">
+								<div class="alert alert-info">
+									<i class="fa fa-info-circle"></i>
+									<?php echo $this->translate( 'no payment history' ) ?>
+								</div>
+							</td></tr>
+						<?php endif ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php echo $this->paginator ?>
+		<script type="text/javascript">
+
+			/**
+			 * Payment library.
+			 * @var object
+			 */
+			var Payment = new Object();
+
+			/**
+			 * Filter form url.
+			 * @var string
+			 */
+			Payment.filterUrl = '<?php echo $this->url( array (
+				'module' => 'admin',
+				'controller' => 'statistics',
+				'action' => 'transactions'
+			), null, true ) ?>';
+
+			/**
+			 * Platform with bound ids to it.
+			 * @var json
+			 */
+			Payment.platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+
+			/**
+			 * DOM ready event.
+			 */
+			$( document ).ready( function ()
+			{
+				$('#platform').change(
+					{ platformPlugins: Payment.platformPlugins },
+					Admin.platformSelectorEvent
+				);
+				if ( $('#plugin').val() ) {
+					$('#platform').change();
+				}
+				// Event for submit button.
+				$('#filter').click( function ( event ) {
+					$('#filter-form').submit();
+				} );
+				<?php if ( $this->filtered ) : ?>
+					Admin.filteredPaginationEvents();
+				<?php endif ?>
+				// Event for invoice details button.
+				$('.view').each( function ( index, element ) {
+					$( element ).click( function ( event ) {
+						$('#modal-title').html(
+							'<?php echo $this->translate( 'invoice details' ) ?>'
+						);
+						$('#modal-content').html(
+							$( this ).parent()
+								.find( '.invoice-details' ).html()
+								.replace( /\r*\n/ig, '<br>' )
+								.replace( /<br>/i, '' )
+						);
+						$('#modal-save').css( 'display', 'none' );
+						$('#dialog-box').modal();
+						event.preventDefault();
+					} );
+				} );
+			} );
+
+		</script>
+	</div>
+</div>

@@ -1,0 +1,208 @@
+<div class="admin-side">
+	<div class="cron">
+		<p><a href="#" class="btn btn-primary" id="create-new-cron">
+			<i class="fa fa-plus"></i>
+			<?php echo $this->translate( 'create new cron task' ) ?>
+		</a></p>
+		<?php if ( count( $this->tasks ) ) : ?>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'tasks' ) ?>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<?php echo $this->formFilter ?>
+					</div>
+					<table class="table table-hover" id="cron-tasks">
+						<thead>
+							<tr>
+								<th><?php echo $this->translate( 'server' ) ?></th>
+								<th><?php echo $this->translate( 'platform' ) ?></th>
+								<th><?php echo $this->translate( 'plugin' ) ?></th>
+								<th><?php echo $this->translate( 'name' ) ?></th>
+								<th><?php echo $this->translate( 'interval' ) ?></th>
+								<th class="center"><?php echo $this->translate( 'max exec time' ) ?></th>
+								<th><?php echo $this->translate( 'last started' ) ?></th>
+								<th><?php echo $this->translate( 'last finished' ) ?></th>
+								<th><?php echo $this->translate( 'last failed' ) ?></th>
+								<th><?php echo $this->translate( 'actions' ) ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $this->tasks as $task ) : ?>
+								<?php $critical = (
+										$this->lastFail[ $task->id ]
+									&& ( ( strtotime( $this->lastFail[ $task->id ] ) + $this->criticalPeriod ) > time() )
+								) ?>
+								<tr<?php if ( $critical ) : ?> class="critical"<?php endif ?>>
+									<td class="server-name"><?php echo $task->server_name ?></td>
+									<td class="platform-name"><?php echo $task->platform_name ? $task->platform_name : $this->translate( 'system' ) ?></td>
+									<td class="plugin-name"><?php echo $task->plugin_name ?></td>
+									<td><?php echo $task->name ?></td>
+									<td title="<?php echo $task->interval ?> sec"><?php
+
+										$hour = floor( $task->interval / SECONDS_PER_HOUR );
+										$min = floor( ( $task->interval % SECONDS_PER_HOUR ) / 60 );
+										$sec = $task->interval % 60;
+										printf( '%02d hour %02d min %02d sec', $hour, $min, $sec );
+
+									?></td>
+									<td class="center" title="<?php
+
+										$min = floor( ( $task->max_exec_time % SECONDS_PER_HOUR ) / 60 );
+										$sec = $task->max_exec_time % 60;
+										printf( '%02d min %02d sec', $min, $sec );
+
+									?>"><?php echo $task->max_exec_time ?> sec</td>
+									<td><?php echo $this->lastStart[ $task->id ] ?></td>
+									<td><?php echo $this->lastFinish[ $task->id ] ?></td>
+									<td><?php echo $this->lastFail[ $task->id ] ?></td>
+									<td class="actions">
+										<?php echo $this->link(
+											'<i class="clip-stats"></i>',
+											$task->id,
+											array (
+												'class' => 'statistics btn-sm btn-info tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'statistics' )
+											)
+										) ?>
+										<?php echo $this->link(
+											'<i class="fa fa-edit"></i>',
+											$task->id,
+											array (
+												'class' => 'edit btn-sm btn-teal tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit' )
+											)
+										) ?>
+										<?php echo $this->link(
+											'<i class="fa fa-times fa fa-white"></i>',
+											$task->id,
+											array (
+												'class' => 'delete btn-sm btn-bricky tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'delete' )
+											)
+										) ?>
+									</td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		<?php else : ?>
+			<div class="alert alert-info">
+				<i class="fa fa-info-circle"></i>
+				<?php echo $this->translate( 'no cron tasks' ) ?>
+			</div>
+		<?php endif ?>
+	</div>
+	<div id="cron-statistics"></div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * Cron library.
+	 * @var object
+	 */
+	var Cron = new Object();
+
+	/**
+	 * Pagination callback.
+	 * @var function
+	 */
+	Cron.callback;
+
+	/**
+	 * Platform with bound ids to it.
+	 * @var json
+	 */
+	Cron.platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+
+	/**
+	 * View statistics url.
+	 * @var string
+	 */
+	Cron.statUrl = '<?php echo $this->url( array (
+		'action' => 'statistics'
+	) ) ?>';
+
+	Admin.createUrl = '<?php echo $this->url( array (
+		'action' => 'create'
+	) ) ?>';
+
+	Admin.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+	Admin.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+	Admin.setFormExtendedEvents = function ()
+	{
+		// Event for platform changin.
+		$('#platform_id').change( function () {
+			var ids = Cron.platformPlugins[ $( this ).val() ];
+			if ( ids ) {
+				$('#plugin_id').attr( 'disabled', false );
+				// Show plugins for selected platform only.
+				$('#plugin_id option').each( function ( index, element ) {
+					if ( ids.indexOf( $( element ).attr( 'value' ) ) == -1 ) {
+						$( element ).css( 'display', 'none' );
+					} else {
+						$( element ).css( 'display', 'block' );
+					}
+				} );
+				// Set first plugin in case platform changed.
+				if ( ids.indexOf( $('#plugin_id').val() ) == -1 ) {
+					var firstOption = $('#plugin_id').find( 'option[style*="block"]' ).get( 0 );
+					$('#plugin_id').val( $( firstOption ).val() );
+				}
+			}
+			else {
+				$('#plugin_id').attr( 'disabled', true );
+			}
+		} );
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function ()
+	{
+		$('#server').change(
+			{ tableId: 'cron-tasks', cellId: 'server-name' },
+			Admin.standardSelectorEvent
+		);
+		$('#platform').change(
+			{ tableId: 'cron-tasks', cellId: 'platform-name', platformPlugins: Cron.platformPlugins },
+			Admin.platformSelectorEvent
+		);
+		$('#plugin').change(
+			{ tableId: 'cron-tasks', cellId: 'plugin-name', linkedSelectorid: 'platform' },
+			Admin.pluginSelectorEvent
+		);
+		$('#create-new-cron').click( Admin.standardCreateAction );
+		$('a.edit').click( Admin.standardEditAction );
+		$('a.delete').click( Admin.standardDeleteAction );
+		// Event for statistics link.
+		$('a.statistics').click( function ( event ) {
+			Admin.enableLoader( '#cron-statistics' );
+			var url = Cron.statUrl +'/id/'+ $( this ).attr( 'href' );
+			$.get( url, function ( data ) {
+				$('#cron-statistics').html( data );
+				Cron.callback = function ( data ) {
+					$('#cron-statistics').html( data );
+				};
+				Admin.paginationContainer = '#cron-statistics';
+				Admin.paginationCallback = Cron.callback;
+			} );
+			event.preventDefault();
+		} );
+	} );
+
+</script>

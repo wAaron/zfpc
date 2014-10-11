@@ -1,0 +1,83 @@
+<div class="<?php echo $this->platform ?>">
+	<div class="auth clearfix">
+		<h1><?php echo $this->translate( $this->platform . ' auth', $this->plugin->name ) ?></h1>
+		<div class="container clearfix">
+			<?php echo $this->plugin->description ?>
+		</div>
+		<div class="container clearfix">
+			<div class="g_12 no-tb-border justify">
+				<?php echo $this->translate( $this->descrKey ) ?>
+			</div>
+			<div class="clear"></div>
+			<div class="g_6">
+				<div id="form-login">
+					<div class="widget_header">
+						<h2><?php echo $this->translate( 'login' ) ?></h2>
+					</div>
+					<div>
+						<?php echo $this->formLogin ?>
+					</div>
+				</div>
+				<div id="form-forgot">
+					<div class="widget_header">
+						<h2><?php echo $this->translate( 'forgot password' ) ?></h2>
+					</div>
+					<div>
+						<?php echo $this->formForgot ?>
+					</div>
+				</div>
+			</div>
+			<?php if ( $this->formRegister ) : ?>
+				<div class="g_6">
+					<div class="widget_header">
+						<h2><?php echo $this->translate( 'register' ) ?></h2>
+					</div>
+					<div>
+						<?php echo $this->formRegister ?>
+					</div>
+				</div>
+			<?php endif ?>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function ()
+    {
+		// Forgot form submission event.
+		$('#form-forgot form').submit( function ( event ) {
+			var url = $('#form-forgot form').attr( 'action' );
+			var data = {
+				username: $('#f-username').val()
+			};
+			$.getJSON( url, data, function ( data ) {
+				var message = '';
+				if ( data.response == 'success' ) {
+					message = '<?php echo Zend_Registry::get( 'translate' )->_( 'new password has been sent' ) ?>';
+				} else if ( data.response == 'no user' ) {
+					message = '<?php echo Zend_Registry::get( 'translate' )->_( 'user or email does not exists' ) ?>';
+				}
+				alert( message );
+			} );
+			return false;
+		} );
+		// Show forgot form event.
+		$('#password-element a').click( function ( event ) {
+			$('#form-login').fadeOut( 200, function () {
+				$('#form-forgot').fadeIn( 200 );
+			} );
+			return false;
+		} );
+		// Show login form event.
+		$('#cancel_forgot').click( function ( event ) {
+			$('#form-forgot').fadeOut( 200, function () {
+				$('#form-login').fadeIn( 200 );
+			} );
+			return false;
+		} );
+	} );
+
+</script>

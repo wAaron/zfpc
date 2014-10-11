@@ -1,0 +1,14 @@
+<link href="http://fonts.googleapis.com/css?family=Oswald|Droid+Sans:400,700" rel="stylesheet">
+<div class="<?php echo $this->platform ?>">
+	<div class="install">
+		<h1><?php echo $this->translate( $this->platform .' install', $this->plugin ) ?></h1>
+		<div class="widget_header">
+			<h2><?php echo $this->translate( 'settings' ) ?></h2>
+		</div>
+		<?php echo $this->formInstall ?>
+	</div>
+</div>
+<?php echo $this->partial( 'prices.phtml', array (
+	'options' => $this->options,
+	'prices' => $this->prices
+) ) ?>

@@ -1,0 +1,96 @@
+<div class="your-plan<?php if ( count( $this->currentPlanOptions ) ) : ?> with-options<?php endif ?>"><?php
+
+	if ( count( $this->currentPlanOptions ) ) :
+		echo $this->translate( 'your plan with options', $this->currentPlanOptionsText, $this->currentPlan );
+	else :
+		echo $this->translate( 'your plan', $this->currentPlan );
+	endif;
+
+?></div>
+<hr />
+<h2><?php echo $this->translate( 'plan type' ) ?></h2>
+<?php $this->thereIsPaidPlan = false; foreach ( $this->plans as $_plan ) : ?>
+	<ul>
+		<?php if ( count( $_plan['options'] ) ) : ?>
+			<li class="with-options" id="plan-title-<?php echo $_plan['plan']['id'] ?>" title="<?php echo $_plan['optionsText'] ?>">
+				<?php echo $_plan['plan']['name'] ?>
+				<script type="text/javascript">
+				/*<![CDATA[*/
+
+					$( function () {
+						$('#plan-title-<?php echo $_plan['plan']['id'] ?>').tipsy( {
+							gravity: 'n',
+							opacity: 0.9,
+							html: true
+						} );
+					} );
+
+				/*]]>*/
+				</script>
+			</li>
+		<?php else : ?>
+			<li><?php echo $_plan['plan']['name'] ?></li>
+		<?php endif ?>
+		<?php foreach ( $_plan['products'] as $_product ) : ?>
+			<li><?php
+
+					if ( !$this->thereIsPaidPlan && is_numeric( $_product->price ) ) :
+						$this->thereIsPaidPlan = true;
+					endif;
+					echo Zend_Controller_Action_HelperBroker::getStaticHelper( '2co' )->price(
+						$_product->variety, $_product->quantity, $_plan['products']->getRow( 0 )->price, $_product->price, true, true
+					)
+
+			?></li>
+		<?php endforeach ?>
+	</ul>
+<?php endforeach ?>
+<div class="clear"></div>
+<?php if ( $this->trialPeriod && $this->thereIsPaidPlan ) : ?>
+	<div class="trial-period">
+		<?php echo $this->translate( 'plans have trial period', $this->trialPeriod, $this->translate( array ( 'day', 'days', $this->trialPeriod ) ) ) ?>
+	</div>
+<?php endif ?>
+<?php
+
+	if ( count( $this->currentPlanOptions ) ) :
+		foreach ( $this->currentPlanOptions as $option ) :
+			if ( $option->use_for_payment ) :
+
+				?>
+				<hr class="high" />
+				<div class="suspend-app">
+					<input type="checkbox" name="suspend_app" id="suspend_app"
+					 <?php if ( $this->suspendApp ) : ?>checked="checked"<?php endif ?>
+					/>
+					<label for="suspend_app" id="suspend_app_label" title="<?php echo $this->translate( 'suspend app description' ) ?>">
+						<?php echo $this->translate( 'suspend app if limit reached' ) ?>
+					</label>
+				</div>
+				<script type="text/javascript">
+				/*<![CDATA[*/
+
+					$( function () {
+						$('#suspend_app_label').tipsy( {
+							gravity: 'n',
+							opacity: 0.9
+						} );
+					} );
+					$('#suspend_app').click( function ( event ) {
+						var value = ( $( this ).attr( 'checked' ) == undefined ) ? 0 : 1;
+						var instance = $('#pc-frame').attr( 'data-instance-id' );
+						var baseUrl = '<?php echo $this->pcBaseURL ?>';
+						var url = baseUrl +'payment/index/set-setting/name/suspend+app/value/'+ value +'/instance/'+ instance;
+						$('#pc-frame').attr( 'src', url );
+					} );
+
+				/*]]>*/
+				</script>
+				<?php
+
+				break;
+			endif;
+		endforeach;
+	endif;
+
+?>

@@ -1,0 +1,184 @@
+<div class="admin-side">
+	<div class="dashboard">
+		<div class="row">
+			<div class="col-sm-7">
+				<?php foreach ( $this->periods as $periodKey => $periodData ) : ?>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="clip-stats"></i>
+							<?php echo $this->translate( $periodKey ) ?>
+						</div>
+						<div class="panel-body">
+							<div class="row space12">
+								<ul class="mini-stats col-sm-12">
+									<li class="col-sm-4">
+										<div class="values">
+											<strong><?php echo $periodData['installed']['amount'] ?></strong>
+											<?php echo $this->translate( 'installations' ) ?>
+										</div>
+									</li>
+									<li class="col-sm-4">
+										<div class="values">
+											<?php if ( $periodData['installed']['averagePerDay'] === null ) : ?>
+												<strong>&nbsp;</strong>&nbsp;
+											<?php else : ?>
+												<strong><?php echo $periodData['installed']['averagePerDay'] ?></strong>
+												<?php echo $this->translate( 'per day' ) ?>
+											<?php endif ?>
+										</div>
+									</li>
+									<li class="col-sm-4">
+										<div class="values">
+											<strong><?php echo $periodData['installed']['difference'] ?>%</strong>
+											<?php echo $this->translate( ( $periodKey != 'all' ) ? 'difference' : 'diff with 7 days' ) ?>
+										</div>
+									</li>
+								</ul>
+								<ul class="mini-stats col-sm-12">
+									<li class="col-sm-4">
+										<div class="values">
+											<strong><?php echo $periodData['uninstalled']['amount'] ?></strong>
+											<?php echo $this->translate( 'uninstallations' ) ?>
+										</div>
+									</li>
+									<li class="col-sm-4">
+										<div class="values">
+											<?php if ( $periodData['uninstalled']['averagePerDay'] === null ) : ?>
+												<strong><?php echo date( 'H:i' ) ?></strong>
+												<?php echo $this->translate( 'servers time' ) ?>
+											<?php else : ?>
+												<strong><?php echo $periodData['uninstalled']['averagePerDay'] ?></strong>
+												<?php echo $this->translate( 'per day' ) ?>
+											<?php endif ?>
+										</div>
+									</li>
+									<li class="col-sm-4">
+										<div class="values">
+											<strong><?php echo $periodData['uninstalled']['difference'] ?>%</strong>
+											<?php echo $this->translate( ( $periodKey != 'all' ) ? 'difference' : 'diff with 7 days' ) ?>
+										</div>
+									</li>
+								</ul>
+								<ul class="mini-stats col-sm-12">
+									<li class="col-sm-4">
+										<div class="values">
+											<strong><?php echo $periodData['conversion']['value'] ?>%</strong>
+											<?php echo $this->translate( 'conversion' ) ?>
+										</div>
+									</li>
+									<li class="col-sm-4">
+										<div class="values">
+											<strong>&nbsp;</strong>&nbsp;
+										</div>
+									</li>
+									<li class="col-sm-4">
+										<div class="values">
+											<strong><?php echo $periodData['conversion']['difference'] ?>%</strong>
+											<?php echo $this->translate( ( $periodKey != 'all' ) ? 'difference' : 'diff with 7 days' ) ?>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				<?php endforeach ?>
+			</div>
+			<div class="col-sm-5">
+				<script type="text/javascript" src="<?php echo $this->config->google->jsapi ?>"></script>
+				<script type="text/javascript">
+
+					google.load( 'visualization', '1', { packages:["corechart"] } );
+
+				</script>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="clip-pie"></i>
+						<?php echo $this->translate( 'installs by platform' ) ?>
+					</div>
+					<div class="panel-body">
+						<div id="platform-installs-chart"></div>
+						<script type="text/javascript">
+
+							function drawPlatformChart() {
+								Admin.drawPieChart(
+									<?php echo $this->platformChartData ?>,
+									'platform-installs-chart',
+									'label'
+								);
+							}
+
+							google.setOnLoadCallback( drawPlatformChart );
+
+						</script>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="clip-pie"></i>
+						<?php echo $this->translate( 'installs by plugins' ) ?>
+					</div>
+					<div class="panel-body">
+						<div id="plugin-installs-chart"></div>
+						<script type="text/javascript">
+
+							function drawPluginChart() {
+								Admin.drawPieChart(
+									<?php echo $this->pluginChartData ?>,
+									'plugin-installs-chart',
+									'percentage'
+								);
+							}
+
+							google.setOnLoadCallback( drawPluginChart );
+
+						</script>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="clip-pie"></i>
+						<?php echo $this->translate( 'earned by platforms' ) ?>
+					</div>
+					<div class="panel-body">
+						<div id="platform-earned-chart"></div>
+						<script type="text/javascript">
+
+							function drawPlatformEarnedChart() {
+								Admin.drawPieChart(
+									<?php echo $this->platformEarnedChartData ?>,
+									'platform-earned-chart',
+									'label'
+								);
+							}
+
+							google.setOnLoadCallback( drawPlatformEarnedChart );
+
+						</script>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="clip-pie"></i>
+						<?php echo $this->translate( 'earned by plugins' ) ?>
+					</div>
+					<div class="panel-body">
+						<div id="plugin-earned-chart"></div>
+						<script type="text/javascript">
+
+							function drawPluginEarnedChart() {
+								Admin.drawPieChart(
+									<?php echo $this->pluginEarnedChartData ?>,
+									'plugin-earned-chart',
+									'percentage'
+								);
+							}
+
+							google.setOnLoadCallback( drawPluginEarnedChart );
+
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

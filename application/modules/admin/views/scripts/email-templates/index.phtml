@@ -1,0 +1,249 @@
+<div class="admin-side">
+	<div class="templates">
+		<p><a href="#" class="btn btn-primary" id="create-new-template">
+			<i class="fa fa-plus"></i>
+			<?php echo $this->translate( 'create new template' ) ?>
+		</a></p>
+		<?php if ( count( $this->files ) ) : ?>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'templates' ) ?>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<?php echo $this->formFilter ?>
+					</div>
+					<table class="table table-hover" id="templates">
+						<thead>
+							<tr>
+								<th><?php echo $this->translate( 'platform' ) ?></th>
+								<th><?php echo $this->translate( 'plugin' ) ?></th>
+								<th><?php echo $this->translate( 'type' ) ?></th>
+								<th><?php echo $this->translate( 'actions' ) ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $this->files as $file ) : ?>
+								<tr>
+									<td class="platform-name"><?php echo $file['platform'] ?></td>
+									<td class="plugin-name"><?php echo $file['plugin'] ?></td>
+									<td class="tpl-type"><?php echo $file['type'] ?></td>
+									<td class="actions">
+										<?php echo $this->link(
+											'<i class="fa fa-edit"></i>',
+											$file['name'],
+											array (
+												'class' => 'edit btn-sm btn-teal tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit' )
+											)
+										) ?>
+										<?php if ( $file['deleteButton'] ) : ?>
+											<?php echo $this->link(
+												'<i class="fa fa-times fa fa-white"></i>',
+												$file['name'],
+												array (
+													'class' => 'delete btn-sm btn-bricky tooltips',
+													'data-placement' => 'top',
+													'data-original-title' => $this->translate( 'delete' )
+												)
+											) ?>
+										<?php endif ?>
+									</td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		<?php else : ?>
+			<div class="alert alert-info">
+				<i class="fa fa-info-circle"></i>
+				<?php echo $this->translate( 'no templates' ) ?>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * Template library.
+	 * @var object
+	 */
+	var Template = new Object();
+
+	/**
+	 * Create new template url.
+	 * @var string
+	 */
+	Template.createUrl = '<?php echo $this->url( array (
+		'action' => 'create'
+	) ) ?>';
+
+	/**
+	 * Edit template url.
+	 * @var string
+	 */
+	Template.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+	/**
+	 * Delete template url.
+	 * @var string
+	 */
+	Template.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+	/**
+	 * Platform with bound ids to it.
+	 * @var json
+	 */
+	 Template.platformPlugins = <?php echo json_encode( $this->platformPlugins ) ?>;
+
+	/**
+	 * Sets events for template forms.
+	 * @param string action - current action.
+	 */
+	Template.setFormEvents = function ( action )
+	{
+		CKEDITOR.replace( 'content', {
+			fullPage: true,
+			allowedContent: true
+		} );
+		// Event for platform changin.
+		$('#platform_id').change( function () {
+			var ids = Template.platformPlugins[ $( this ).val() ];
+			if ( ids ) {
+				$('#plugin_id').attr( 'disabled', false );
+				// Show plugins for selected platform only.
+				$('#plugin_id option').each( function ( index, element ) {
+					if ( $( element ).attr( 'value' ) && ( ids.indexOf( $( element ).attr( 'value' ) ) == -1 ) ) {
+						$( element ).css( 'display', 'none' );
+					} else {
+						$( element ).css( 'display', 'block' );
+					}
+				} );
+				// Set first plugin in case platform changed.
+				if ( ids.indexOf( $('#plugin_id').val() ) == -1 ) {
+					var firstOption = $('#plugin_id').find( 'option[style*="block"]' ).get( 0 );
+					$('#plugin_id').val( $( firstOption ).val() );
+				}
+			}
+			else {
+				$('#plugin_id').attr( 'disabled', true );
+			}
+		} );
+		// Event for create submit button.
+		if ( action == 'create' ) {
+			$('#modal-save').click( function () {
+				CKEDITOR.instances.content.updateElement();
+				$.post( Template.createUrl,
+					$('#template-create-form').serialize(),
+					function ( data ) {
+						$('#modal-content').html( data );
+						if ( data.indexOf( 'alert-success' ) != -1 ) {
+							Admin.reloadPage();
+						} else {
+							Template.setFormEvents( 'create' );
+						}
+					}
+				);
+			} );
+		}
+		// Event for save submit button.
+		else if ( action == 'edit' ) {
+			$('#modal-save').click( function () {
+				CKEDITOR.instances.content.updateElement();
+				$.post(
+					$('#template-edit-form').attr( 'action' ),
+					$('#template-edit-form').serialize(),
+					function ( data ) {
+						$('#modal-content').html( data );
+						if ( data.indexOf( 'alert-success' ) != -1 ) {
+							Admin.reloadPage();
+						} else {
+							Template.setFormEvents( 'edit' );
+						}
+					}
+				);
+			} );
+		}
+	};
+
+	/**
+	 * Calls a dialog-box having set styles beforehand.
+	 */
+	Template.callDialogBox = function ()
+	{
+		$('#dialog-box').attr( 'data-width', '900' );
+		$('#dialog-box label.col-sm-4').each( function ( index, element ) {
+			$( element ).removeClass( 'col-sm-4' );
+			$( element ).addClass( 'col-sm-2' );
+		} );
+		$('#dialog-box .col-sm-7').each( function ( index, element ) {
+			$( element ).removeClass( 'col-sm-7' );
+			$( element ).addClass( 'col-sm-9' );
+		} );
+		$('#dialog-box').modal();
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function ()
+	{
+		$('#platform').change(
+			{ tableId: 'templates', cellId: 'platform-name', platformPlugins: Template.platformPlugins },
+			Admin.platformSelectorEvent
+		);
+		$('#type').change(
+			{ tableId: 'templates', cellId: 'tpl-type' },
+			Admin.standardSelectorEvent
+		);
+		$('#plugin').change(
+			{ tableId: 'templates', cellId: 'plugin-name', linkedSelectorid: 'platform' },
+			Admin.pluginSelectorEvent
+		);
+		// Event for create new template button.
+		$('#create-new-template').click( function () {
+			// Fill dialog box.
+			$.get( Template.createUrl, function ( data ) {
+				$('#modal-title').html(
+					'<?php echo $this->translate( 'create new template' ) ?>'
+				);
+				$('#modal-content').html( data );
+				Template.setFormEvents( 'create' );
+				Template.callDialogBox();
+			} );
+			return false;
+		} );
+		// Event for edit link.
+		$('a.edit').click( function () {
+			// Fill dialog box.
+			var url = Template.editUrl +'/id/'+ $( this ).attr( 'href' );
+			$.get( url, function ( data ) {
+				$('#modal-title').html(
+					'<?php echo $this->translate( 'edit template' ) ?>'
+				);
+				$('#modal-content').html( data );
+				Template.setFormEvents( 'edit' );
+				Template.callDialogBox();
+			} );
+			return false;
+		} );
+		// Event for delete link.
+		$('a.delete').click( function () {
+			if ( confirm( '<?php echo $this->translate( 'are you sure' ) ?>' ) ) {
+				var url = Template.deleteUrl +'/id/'+ $( this ).attr( 'href' );
+				$.get( url, function ( data ) {
+					Admin.reloadPage();
+				} );
+			}
+			return false;
+		} );
+	} );
+
+</script>

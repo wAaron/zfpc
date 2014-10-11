@@ -1,0 +1,120 @@
+<div class="admin-side">
+	<div class="members">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-external-link-square"></i>
+				<?php echo $this->translate( 'members' ) ?>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<?php echo $this->formFilter ?>
+				</div>
+				<table class="table table-hover" id="members">
+					<thead>
+						<tr>
+							<th><?php echo $this->translate( 'platform' ) ?></th>
+							<th><?php echo $this->translate( 'name' ) ?></th>
+							<th><?php echo $this->translate( 'shop' ) ?></th>
+							<th><?php echo $this->translate( 'email' ) ?></th>
+							<th><?php echo $this->translate( 'registered' ) ?></th>
+							<th><?php echo $this->translate( 'last login' ) ?></th>
+							<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+								<th class="center"><?php echo $this->translate( 'total pay amount' ) ?></th>
+							<?php endif ?>
+							<th class="center"><?php echo $this->translate( 'apps' ) ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if ( $this->paginator->getTotalItemCount() ) : ?>
+							<?php foreach ( $this->paginator->getCurrentItems() as $user ) : ?>
+								<?php $totalPayAmount = $user->getTotalPayAmount(); ?>
+								<?php
+									$appsHtml = '';
+									$installedPlugins = $user->getInstalledPlugins();
+									if ( count( $installedPlugins ) ) {
+										$appsHtml .= '<table><tr><th>'. $this->translate( 'app' ) .'</th><th>'. $this->translate( 'last login' ) .'</th></tr>';
+										foreach ( $installedPlugins as $plugin ) {
+											if ( $user->platform_name == 'shopify' ) {
+												$appLink = $this->link(
+													$plugin->name,
+													$this->url( array (
+														'action' => 'login',
+														'controller' => 'auth',
+														'module' => $user->platform_name,
+														'plugin' => base64_encode( $plugin->name ),
+														'shop_id' => $user->shop_id,
+													), null, true ),
+													array (
+														'target' => '_blank'
+													)
+												);
+											} else {
+												$appLink = $this->link(
+													$plugin->name,
+													$this->url( array (
+														'action' => 'login',
+														'controller' => 'auth',
+														'module' => $user->platform_name,
+														'plugin' => base64_encode( $plugin->name ),
+														'username' => $user->name,
+													), null, true ),
+													array (
+														'target' => '_blank'
+													)
+												);
+											}
+											$appLink = str_replace( '"', '\'',$appLink );
+											$appsHtml .= '<tr><td>'. $appLink .'</td><td>'. $plugin->last_login .'</td></tr>';
+										}
+										$appsHtml .= '</table>';
+									}
+								?>
+								<tr>
+									<td><?php echo $user->platform_title ?></td>
+									<td><?php echo $user->name ?></td>
+									<td><?php echo $user->shop ?></td>
+									<td><?php echo $user->email ?></td>
+									<td><?php echo $user->registered ?></td>
+									<td><?php echo $user->last_login ?></td>
+									<?php if ( $this->isAllowed( $this->resourceName, 'finance' ) ) : ?>
+										<td class="center"><?php echo $totalPayAmount ?></td>
+									<?php endif ?>
+									<td class="center">
+										<div class="popovers" data-placement="left" data-trigger="click"
+										 data-original-title="<?php echo $this->translate( 'installed plugins' ) ?>"
+									 	 data-content="<?php echo $appsHtml ?>"
+									 	><?php echo count( $installedPlugins ) ?></div>
+									</td>
+								</tr>
+							<?php endforeach ?>
+						<?php else : ?>
+							<tr><td colspan="9">
+								<div class="alert alert-info">
+									<i class="fa fa-info-circle"></i>
+									<?php echo $this->translate( 'no new users' ) ?>
+								</div>
+							</td></tr>
+						<?php endif ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php echo $this->paginator ?>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function () {
+		// Event for submit button.
+		$('#filter').click( function ( event ) {
+			$('#filter-form').submit();
+		} );
+		<?php if ( $this->filtered ) : ?>
+			Admin.filteredPaginationEvents();
+		<?php endif ?>
+	} );
+
+</script>

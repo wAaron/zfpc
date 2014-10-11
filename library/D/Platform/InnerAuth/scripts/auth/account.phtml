@@ -1,0 +1,90 @@
+<div class="<?php echo $this->platform ?>">
+	<?php echo $this->action( 'menu', 'template', 'default', array (
+		'platform' => $this->platform,
+		'shop' => $this->shop->name,
+		'plugin' => $this->plugin->name,
+		'target' => false
+	) ) ?>
+	<div class="clear"></div>
+	<div class="account">
+		<h1><?php echo $this->translate( $this->platform . ' account',
+			$this->user->name,
+			$this->url( array (
+				'action' => 'edit',
+				'controller' => 'auth',
+				'module' => $this->platform,
+				'plugin' => base64_encode( $this->plugin->name ),
+			), null, true )
+		) ?></h1>
+
+		<!-- Installed plugins -->
+		<?php if ( $this->credentials->toArray() ) : ?>
+			<div class="widget_header">
+				<h2><?php echo $this->translate( 'installed apps' ) ?></h2>
+			</div>
+			<ul>
+			<?php foreach ( $this->credentials as $_item ) : ?>
+				<li>
+					<h3><a href="<?php echo $this->url( array (
+							'action' => 'goto',
+							'controller' => 'auth',
+							'module' => $this->platform,
+							'user' => $this->user->id,
+							'plugin' => base64_encode( $_item->plugin_name),
+						), null, true ) ?>">
+						<?php echo $_item->plugin_name ?>
+					</a></h3>
+					<a href="<?php echo $this->url( array (
+							'action' => 'configure',
+							'controller' => 'plugin',
+							'module' => $this->platform,
+							'api_id' => $_item->id,
+							'plugin' => base64_encode( $_item->plugin_name )
+						), null, true ) ?>">
+						<?php echo $this->translate( 'configure' ) ?>
+					</a>
+					<a href="<?php echo $this->url( array (
+							'action' => 'uninstall',
+							'controller' => 'plugin',
+							'module' => $this->platform,
+							'shop_id' => $this->shop->id,
+							'plugin_id' => $_item->plugin_id,
+							'api_id' => $_item->id,
+							'plugin' => base64_encode( $_item->plugin_name )
+						), null, true ) ?>"
+						onclick="return confirm( 'Are you sure?' );">
+						<?php echo $this->translate( 'uninstall' ) ?>
+					</a>
+					<div class="clear"></div>
+					<p><?php echo $_item->plugin_desc ?></p>
+				</li>
+			<?php endforeach ?>
+			</ul>
+		<?php endif ?>
+
+		<!-- Not installed plugins -->
+		<?php if ( $this->notInstalledPlugins->toArray() ) : ?>
+			<div class="widget_header">
+				<h2><?php echo $this->translate( 'not installed apps' ) ?></h2>
+			</div>
+			<ul>
+			<?php foreach ( $this->notInstalledPlugins as $_item ) : ?>
+				<li>
+					<h3><?php echo $_item->name ?></h3>
+					<a href="<?php echo $this->url( array (
+							'action' => 'install',
+							'controller' => 'auth',
+							'module' => $this->platform,
+							'plugin' => base64_encode( $this->plugin->name ),
+							'installPlugin' => base64_encode( $_item->name )
+						), null, true ) ?>">
+						<?php echo $this->translate('install') ?>
+					</a>
+					<div class="clear"></div>
+					<p><?php echo $_item->description ?></p>
+				</li>
+			<?php endforeach ?>
+			</ul>
+		<?php endif ?>
+	</div>
+</div>

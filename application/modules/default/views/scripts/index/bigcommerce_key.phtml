@@ -1,0 +1,38 @@
+<div class="bigcommerce">
+	<h1><?php echo $this->translate( 'Receipt of the API Credentials' ) ?></h1>
+	<div class="page">
+		<div class="container">
+			<p><b>You can find the API Credentials by the following way:</b></p>
+			<p><b><span style="color: #ff6600">1)</span>   Go to the admin panel of BigCommerce.</b></p>
+			<p><b><span style="color: #ff6600">2)</span>	Click on <i>Setup & Tools </i>&nbsp; link.</b></p>
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/bigcommerce/bc_link_user.png' ) ?>" style="max-width: 750px" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">3)</span>Click on Advanced Tools -> Legacy Api accounts. Choose the user for editing whom you want to grant access via API. If you haven't created any user before, then you need to create him first of all.</b></p>
+			<br />
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/bigcommerce/bc_create_user.png' ) ?>" style="max-width: 750px" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">4)</span>	Copy <i>Username and API Token</i>. <br /></b></p>
+			<br />
+			<p><img src="<?php echo $this->baseUrl( 'public/images/screenshots/bigcommerce/bc_api_user.png' ) ?>" style="max-width: 750px" /></p>
+			<br />
+			<p><b><span style="color: #ff6600">5)</span>	<span style="color: #ff6600">Important:</span> don't forget to click on the button "Save" if you have generated new API Token key by pressing on the "Generate New Token" button. Otherwise your generated token won't be valid and you'll get the next message on the app: "The specified credentials (API User or API Token) were invalid"</p>
+
+		</div>
+	</div>
+</div>
+<style type="text/css">
+/*<![CDATA[*/
+
+	<?php echo $this->css ?>
+
+/*]]>*/
+</style>
+<!--[if gte IE 7]>
+<style type="text/css">
+/*<![CDATA[*/
+
+	<?php echo $this->iecss ?>
+
+/*]]>*/
+</style>
+<![endif]-->

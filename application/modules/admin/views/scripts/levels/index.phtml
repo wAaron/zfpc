@@ -1,0 +1,200 @@
+
+<div class="admin-side">
+	<div class="levels">
+		<?php if ( $this->isAllowed($this->resourceName,'create') ) : ?>
+			<p><a href="#" class="btn btn-primary" id="create-new-level">
+					<i class="fa fa-plus"></i>
+					<?php echo $this->translate( 'add new level' ) ?>
+				</a></p>
+		<?php endif ?>
+		<?php if ( count( $this->levels ) ) : ?>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					<?php echo $this->translate( 'levels' ) ?>
+				</div>
+				<div class="panel-body">
+
+					<table class="table table-hover" id="levels">
+						<thead>
+						<tr>
+							<th><?php echo $this->translate( 'Level Id' ) ?></th>
+							<th><?php echo $this->translate( 'Name' ) ?></th>
+							<th><?php echo $this->translate( 'Title' ) ?></th>
+							<th><?php echo $this->translate( 'Actions' ) ?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php foreach ( $this->levels as $level ) : ?>
+							<tr>
+								<td class="tpl-id"><?php echo $level['id'] ?></td>
+								<td class="tpl-name"><?php echo $level['name'] ?></td>
+								<td class="tpl-title"><?php echo $level['title'] ?></td>
+								<td class="actions">
+									<?php if ( $this->isAllowed($this->resourceName,'edit')  ) : ?>
+										<?php echo $this->link(
+											'<i class="fa fa-edit"></i>',
+											$level['id'],
+											array (
+												'class' => 'edit btn-sm btn-teal tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit' )
+											)
+										) ?>
+									<?php endif ?>
+									<?php if ( $this->isAllowed($this->resourceName,'edit-permissions')  ) : ?>
+										<?php echo $this->link(
+											'<i class="fa fa-share"></i>',
+											$level['id'],
+											array (
+												'class' => 'edit-permissions btn-sm btn-green tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'edit permissions' )
+											)
+										) ?>
+									<?php endif ?>
+									<?php if ( $this->isAllowed($this->resourceName,'delete')  ) : ?>
+										<?php echo $this->link(
+											'<i class="fa fa-times fa fa-white"></i>',
+											$level['id'],
+											array (
+												'class' => 'delete btn-sm btn-bricky tooltips',
+												'data-placement' => 'top',
+												'data-original-title' => $this->translate( 'delete' )
+											)
+										) ?>
+									<?php endif ?>
+								</td>
+							</tr>
+						<?php endforeach ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		<?php else : ?>
+			<div class="alert alert-info">
+				<i class="fa fa-info-circle"></i>
+				<?php echo $this->translate( 'no levels' ) ?>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * User library.
+	 * @var object
+	 */
+	var Level = new Object();
+
+	/**
+	 * Edit user url.
+	 * @var string
+	 */
+	Level.editPermissionsUrl = '<?php echo $this->url( array (
+		'action' => 'permissions'
+	) ) ?>';
+
+
+	/**
+	 * Create new user url.
+	 * @var string
+	 */
+	Admin.createUrl = '<?php echo $this->url( array (
+		'action' => 'create'
+	) ) ?>';
+
+	/**
+	 * Edit user url.
+	 * @var string
+	 */
+	Admin.editUrl = '<?php echo $this->url( array (
+		'action' => 'edit'
+	) ) ?>';
+
+	/**
+	 * Delete user url.
+	 * @var string
+	 */
+	Admin.deleteUrl = '<?php echo $this->url( array (
+		'action' => 'delete'
+	) ) ?>';
+
+
+	/**
+	 * Sets events for template forms.
+	 * @param string action - current action.
+	 */
+	Level.setFormEvents = function ( action )
+	{
+		if ( action == 'permissions' ) {
+			$('#modal-save').unbind('click');
+			$('#modal-save').click( function () {
+				$.post(
+					$('#level-edit-permissions-form').attr( 'action' ),
+					$('#level-edit-permissions-form').serialize(),
+					function ( data ) {
+						$('#modal-content').html( data );
+						if ( data.indexOf( 'alert-success' ) != -1 ) {
+							Admin.reloadPage();
+						} else {
+							Level.setFormEvents( 'permissions' );
+							Level.callDialogBox();
+						}
+					}
+				);
+			} );
+		}
+	};
+
+	/**
+	 * Calls a dialog-box having set styles beforehand.
+	 */
+	Level.callDialogBox = function ()
+	{
+		$('#dialog-box label.col-sm-4').each( function ( index, element ) {
+			$( element ).removeClass( 'col-sm-4' );
+			$( element ).addClass( 'col-sm-3' );
+		} );
+
+		$('#dialog-box').modal();
+	};
+
+	Admin.setFormExtendedEvents = function ()
+	{
+		$('#dialog-box label.col-sm-4').each( function ( index, element ) {
+			$( element ).removeClass( 'col-sm-4' );
+			$( element ).addClass( 'col-sm-3' );
+		} );
+
+		$('#dialog-box').modal();
+	};
+
+	/**
+	 * DOM ready event.
+	 */
+	$( document ).ready( function ()
+	{
+		$('#create-new-level').click( Admin.standardCreateAction );
+		$('a.edit').click( Admin.standardEditAction );
+		$('a.delete').click( Admin.standardDeleteAction );
+
+		// Event for edit permissions link.
+		$('a.edit-permissions').click( function () {
+			var url = Level.editPermissionsUrl +'/id/'+ $( this ).attr( 'href' );
+			$.get( url, function ( data ) {
+				$('#modal-title').html(
+					'<?php echo $this->translate( 'edit level permissions' ) ?>'
+				);
+				$('#modal-content').html( data );
+				Level.setFormEvents( 'permissions' );
+				Level.callDialogBox();
+			} );
+
+			return false;
+		} );
+
+
+	} );
+
+</script>
