@@ -1,0 +1,69 @@
+<?php if ( $this->pageCount ) : ?>
+	<ul class="pagination pagination-sm">
+		<!-- First page link -->
+		<?php if ( isset ( $this->previous ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'first',
+					$this->url( array (
+						'page' => $this->first
+					) )
+				) ?>
+			</li>
+		<?php endif ?>
+
+		<!-- Previous page link -->
+		<?php if ( isset ( $this->previous ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'previous',
+					$this->url( array (
+						'page' => $this->previous
+					) )
+				) ?>
+			</li>
+		<?php endif ?>
+
+		<!-- Range -->
+		<?php
+			foreach ( $this->pagesInRange as $page ) :
+				$active = ( $page == $this->current ) ? ' class="active"' : '';
+				echo '<li'. $active .'>'. $this->link(
+					$page,
+					$this->url( array (
+						'page' => $page
+					) )
+				) .'</li>';
+			endforeach;
+		?>
+
+		<!-- Next page link -->
+		<?php if ( isset ( $this->next ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'next',
+					$this->url( array (
+						'page' => $this->next
+					) )
+				) ?>
+			</li>
+		<?php endif ?>
+
+		<!-- Last page link -->
+		<?php if ( isset ( $this->next ) ) : ?>
+			<li>
+				<?php echo $this->link(
+					'last',
+					$this->url( array (
+						'page' => $this->last
+					) )
+				) ?>
+			</li>
+		<?php endif ?>
+	</ul>
+	<?php /*
+		<div class="range">
+			( from <?php echo $this->firstItemNumber ?> to <?php echo $this->lastItemNumber ?> all <?php echo $this->totalItemCount ?> )
+		</div>
+	*/?>
+<?php endif ?>
